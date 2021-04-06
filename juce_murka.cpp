@@ -1,4 +1,2 @@
 #include "juce_murka.h"
-
-#include "juceFontStash.cpp"
-
+#include "juceFontStash/juceFontStash.cpp"

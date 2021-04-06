@@ -2,13 +2,13 @@
 
 #define MURKA_JUCE
 
-#include "Murka.h"
-#include "MurkaBasicWidgets.h"
-#include "DraggableNumberEditor.h"
-#include "TextField.h"
-#include "LambdaButton.h"
-#include "LambdaPanel.h"
-#include "Pane.h"
-#include "ScrollBar.h"
-#include "MosaicLayout.h"
-#include "MurkaRenderer.h"
+#include "Murka/Murka.h"
+#include "Murka/MurkaBasicWidgets.h"
+#include "Murka/DraggableNumberEditor.h"
+#include "Murka/TextField.h"
+#include "Murka/LambdaButton.h"
+#include "Murka/LambdaPanel.h"
+#include "Murka/Pane.h"
+#include "Murka/ScrollBar.h"
+#include "Murka/MosaicLayout.h"
+#include "Murka/MurkaRenderer.h"

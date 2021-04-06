@@ -10,20 +10,17 @@
   ID:                 juce_murka
   vendor:             kiberchaika
   version:            0.0.1
-  name:               Murka UI
-  description:        
-  website:            kiberchaika.ru
+  name:               JUCE Murka UI
+  description:
+  website:            https://github.com/Kiberchaika/juce_murka
   license:            Free
 
   dependencies:       juce_opengl
   searchpaths:        ./juceFontStash ./juceFontStash/fontstash/src ./juceMurka ./juceMurka/murka
   defines:            MURKA_JUCE JUCE_OPENGL3
 
-
  END_JUCE_MODULE_DECLARATION
 
 *******************************************************************************/
 
-
-#include "juceMurka.h"
-
+#include "juceMurka/juceMurka.h"

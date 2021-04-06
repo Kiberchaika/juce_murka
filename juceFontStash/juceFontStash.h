@@ -13,11 +13,11 @@
 #endif
 
 extern "C" {
-#include "fontstash.h"
+#include "fontstash/src/fontstash.h"
 }
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-#include "murkafontstash.h"
+#include "fontstash/src/murkafontstash.h"
 #else 
 #include "offontstash.h"
 #endif
