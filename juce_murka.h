@@ -16,11 +16,21 @@
   license:            Free
 
   dependencies:       juce_opengl
-  searchpaths:        ./juceFontStash ./juceFontStash/fontstash/src ./juceMurka ./juceMurka/murka
-  defines:            MURKA_JUCE JUCE_OPENGL3
+  searchpaths:        ./FontStash ./FontStash/src ./Murka
 
  END_JUCE_MODULE_DECLARATION
 
 *******************************************************************************/
 
-#include "juceMurka/juceMurka.h"
+#define MURKA_JUCE
+
+#include "Murka.h"
+#include "MurkaBasicWidgets.h"
+#include "DraggableNumberEditor.h"
+#include "TextField.h"
+#include "LambdaButton.h"
+#include "LambdaPanel.h"
+#include "Pane.h"
+#include "ScrollBar.h"
+#include "MosaicLayout.h"
+#include "MurkaRenderer.h"
