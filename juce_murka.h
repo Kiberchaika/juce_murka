@@ -16,14 +16,11 @@
   license:            Free
 
   dependencies:       juce_opengl
-  searchpaths:        ./juceFontStash ./juceFontStash/fontstash/src ./juceMurka ./juceMurka/murka
+  searchpaths:        juceFontStash juceFontStash/fontstash/src juceMurka juceMurka/murka
   defines:            MURKA_JUCE JUCE_OPENGL3
 
 
  END_JUCE_MODULE_DECLARATION
 
 *******************************************************************************/
-
-
-#include "juceMurka.h"
 

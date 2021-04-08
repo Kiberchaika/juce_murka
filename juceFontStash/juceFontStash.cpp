@@ -52,7 +52,7 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-	context->renderer = (MurkaRendererBase*)renderer;
+	context->renderer = (murka::MurkaRendererBase*)renderer;
 #endif
 
     string path = filename;
@@ -76,7 +76,7 @@ void juceFontStash::updateTexture(void* renderer) {
     if (fs) {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
         MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-        context->renderer = (MurkaRendererBase*)renderer;
+        context->renderer = (murka::MurkaRendererBase*)renderer;
 
         bool bUseArb = context->renderer->getUsingArbTex();
 		context->renderer->disableArbTex();
