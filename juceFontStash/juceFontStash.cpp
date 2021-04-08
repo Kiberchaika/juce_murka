@@ -88,7 +88,7 @@ void juceFontStash::updateTexture(void* renderer) {
         }
         
         if (context->vbo != 0) {
-            context->vbo->update();
+            context->vbo->update(GL_STREAM_DRAW, ((murka::MurkaRenderer*)context->renderer)->getAttribLocationPosition(), ((murka::MurkaRenderer*)context->renderer)->getAttribLocationUv());
         }
         
         bUseArb ? context->renderer->enableArbTex() : context->renderer->disableArbTex();
