@@ -81,7 +81,7 @@ void juceFontStash::updateTexture(void* renderer) {
         bool bUseArb = context->renderer->getUsingArbTex();
 		context->renderer->disableArbTex();
 
-        //fonsResetAtlas(fs, fs->params.width, fs->params.height);
+        fonsResetAtlas(fs, fs->params.width, fs->params.height);
         
         if (context->img != 0) {
             context->img->update();
