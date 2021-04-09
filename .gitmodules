@@ -2,5 +2,5 @@
 	path = Murka
 	url = git@github.com:Kiberchaika/Murka.git
 [submodule "fontstash"]
-	path = FontStash
+	path = fontstash
 	url = git@github.com:Kiberchaika/fontstash.git
