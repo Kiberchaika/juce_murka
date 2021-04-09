@@ -1,6 +1,6 @@
-[submodule "juceMurka/Murka"]
-	path = juceMurka/Murka
-	url = https://github.com/Kiberchaika/Murka
-[submodule "juceFontStash/fontstash"]
-	path = juceFontStash/fontstash
-	url = https://github.com/Kiberchaika/fontstash
+[submodule "Murka"]
+	path = Murka
+	url = git@github.com:Kiberchaika/Murka.git
+[submodule "fontstash"]
+	path = FontStash
+	url = git@github.com:Kiberchaika/fontstash.git
