@@ -63,6 +63,15 @@ public:
 	}
 #else
 	void makeTransparent();
+
+    bool isWindowFocused = false;
+    
+    void checkMainWindow();
+    
+    void addKeyboardMonitor();
+    void removeKeyboardMonitor();
+    
+    id keyboardMonitor;
 #endif
 
 	//==============================================================================
