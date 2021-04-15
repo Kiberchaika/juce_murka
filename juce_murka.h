@@ -37,9 +37,3 @@
 #include "ScrollBar.h"
 #include "MosaicLayout.h"
 #include "MurkaRenderer.h"
-
-namespace murka {
-
-int convertKey(int key);
-
-};

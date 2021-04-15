@@ -1,8 +1,10 @@
 #include <AppKit/NSOpenGL.h>
 #include <AppKit/NSWindow.h>
+
 #include "JuceMurkaBaseComponent.h"
 
-#if defined(JUCE_APP_VERSION)
+using namespace murka;
+
 void JuceMurkaBaseComponent::makeTransparent()
 {
 	NSView* handle = (NSView*)getWindowHandle();
@@ -48,28 +50,28 @@ void JuceMurkaBaseComponent::checkMainWindow()
                 keysPressed.erase(key.first);
 
                 int k = convertKey(key.first);
-                sendKeyReleasedToSubPlugin(k >= 0 ? k : KeyPress(key.first).getTextCharacter());
+                m.registerKeyReleased(k >= 0 ? k : KeyPress(key.first).getTextCharacter());
             }
         
         // Releasing modifier keys
 
         if (keyShiftPressed) {
-            sendKeyReleasedToSubPlugin(ofKey::OF_KEY_SHIFT);
+            m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_SHIFT);
             keyShiftPressed = false;
         }
 
         if (keyCtrlPressed) {
-            sendKeyReleasedToSubPlugin(ofKey::OF_KEY_CONTROL);
+            m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_CONTROL);
             keyCtrlPressed = false;
         }
 
         if (keyAltPressed) {
-            sendKeyReleasedToSubPlugin(ofKey::OF_KEY_ALT);
+            m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_ALT);
             keyAltPressed = false;
         }
 
         if (keyCommandPressed) {
-            sendKeyReleasedToSubPlugin(ofKey::OF_KEY_COMMAND);
+            m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_COMMAND);
             keyCommandPressed = false;
         }
     }
@@ -97,11 +99,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
         
             if ((event.keyCode == 56) || (event.keyCode == 60)) { // this is Shift key, left and right
                 if ([event modifierFlags] & NSEventModifierFlagShift) {
-                    sendKeyPressedToSubplugin(ofKey::OF_KEY_SHIFT);
+                    m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_SHIFT);
                     keyShiftPressed = true;
                     return event;
                 } else {
-                    sendKeyReleasedToSubPlugin(ofKey::OF_KEY_SHIFT);
+                    m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_SHIFT);
                     keyShiftPressed = false;
                     return event;
                 }
@@ -111,11 +113,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
 
             if ((event.keyCode == 59) || (event.keyCode == 62)) { // this is Control key, left and right
                 if ([event modifierFlags] & NSEventModifierFlagControl) {
-                    sendKeyPressedToSubplugin(ofKey::OF_KEY_CONTROL);
+                    m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_CONTROL);
                     keyCtrlPressed = true;
                     return event;
                 } else {
-                    sendKeyReleasedToSubPlugin(ofKey::OF_KEY_CONTROL);
+                    m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_CONTROL);
                     keyCtrlPressed = false;
                     return event;
                 }
@@ -125,11 +127,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
 
             if ((event.keyCode == 58) || (event.keyCode == 61)) { // this is Option key, left and right
                 if ([event modifierFlags] & NSEventModifierFlagOption) {
-                    sendKeyPressedToSubplugin(ofKey::OF_KEY_ALT);
+                    m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_ALT);
                     keyAltPressed = true;
                     return event;
                 } else {
-                    sendKeyReleasedToSubPlugin(ofKey::OF_KEY_ALT);
+                    m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_ALT);
                     keyAltPressed = false;
                     return event;
                 }
@@ -139,11 +141,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
 
             if ((event.keyCode == 55) || (event.keyCode == 54)) { // this is Command key, left and right
                 if ([event modifierFlags] & NSEventModifierFlagCommand) {
-                    sendKeyPressedToSubplugin(ofKey::OF_KEY_COMMAND);
+                    m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_COMMAND);
                     keyCommandPressed = true;
                     return event;
                 } else {
-                    sendKeyReleasedToSubPlugin(ofKey::OF_KEY_COMMAND);
+                    m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_COMMAND);
                     keyCommandPressed = false;
                     return event;
                 }
@@ -156,10 +158,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
             auto convertedKey = convertKey(event.keyCode);
             if (convertedKey == -1) convertedKey = [event.characters characterAtIndex:0];
             
-            auto subpluginResult = sendKeyPressedToSubplugin(convertedKey);
+            m.registerKeyPressed(convertedKey);
+			auto res = m.doesHaveAWidgetThatHoldsKeyboardFocus();
             keysPressed[convertedKey] = KeyPress(convertedKey).getTextCharacter();
 
-            if (subpluginResult) {
+            if (res) {
                 return nil;
             } else {
                 return event;
@@ -170,10 +173,11 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
             auto convertedKey = convertKey(event.keyCode);
             if (convertedKey == -1) convertedKey = [event.characters characterAtIndex:0];
             
-            auto subpluginResult = sendKeyReleasedToSubPlugin(convertedKey);
+            m.registerKeyReleased(convertedKey);
+			auto res = m.doesHaveAWidgetThatHoldsKeyboardFocus();
             keysPressed.erase(convertedKey);
             
-            if (subpluginResult) {
+            if (res) {
                 return nil;
             } else {
                 return event;
@@ -194,4 +198,3 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
      */
     
 }
-#endif
