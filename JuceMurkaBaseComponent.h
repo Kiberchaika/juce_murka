@@ -1,7 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "juce_murka.h"
+#include "juce_murka/juce_murka.h"
+#include "juce_opengl/juce_opengl.h"
 
 #ifdef __APPLE__
 #include <objc/objc.h>
@@ -9,16 +10,16 @@
 
 namespace murka {
 
-class JuceMurkaBaseComponent : public OpenGLAppComponent, public juce::KeyListener
+class JuceMurkaBaseComponent : public juce::OpenGLAppComponent, public juce::KeyListener
 {
 public:
 	JuceMurkaBaseComponent() {
 		// Make sure you set the size of the component after
 		// you add any child components.
-		openGLContext.setOpenGLVersionRequired(OpenGLContext::OpenGLVersion::openGL3_2);
+		openGLContext.setOpenGLVersionRequired(juce::OpenGLContext::OpenGLVersion::openGL3_2);
 		openGLContext.setMultisamplingEnabled(true);
 
-		OpenGLPixelFormat pixelFormat;
+		juce::OpenGLPixelFormat pixelFormat;
 		pixelFormat.multisamplingLevel = 8;
 		openGLContext.setPixelFormat(pixelFormat);
 
@@ -47,8 +48,8 @@ public:
 		m.setupScreen();
 
 		m.setClipboardCallbacks(
-			[&]() -> std::string { return SystemClipboard::getTextFromClipboard().toStdString(); },
-			[&](std::string clipboard) -> void { SystemClipboard::copyTextToClipboard(clipboard); }
+			[&]() -> std::string { return juce::SystemClipboard::getTextFromClipboard().toStdString(); },
+			[&](std::string clipboard) -> void { juce::SystemClipboard::copyTextToClipboard(clipboard); }
 		);
 	}
 
@@ -106,7 +107,7 @@ public:
     }
     
 	//==============================================================================
-	void paint(Graphics& g) override {
+	void paint(juce::Graphics& g) override {
 
 	}
 
