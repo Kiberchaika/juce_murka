@@ -13,7 +13,7 @@ extern "C" {
 #include "offontstash.h"
 #endif
 
-#define ATLAS_MAX_SIZE 4096
+#define ATLAS_MAX_SIZE 1024
 
 void juceFontStash::cleanup() {
 	if (fs != NULL) {
@@ -44,7 +44,7 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
     
     cleanup();
     
-    fs = glfonsCreate(2048, 2048, FONS_ZERO_TOPLEFT);
+    fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
     if (fs == NULL) {
         printf("Could not create stash.\n");
         return;
