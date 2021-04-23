@@ -50,7 +50,7 @@ void JuceMurkaBaseComponent::checkMainWindow()
                 keysPressed.erase(key.first);
 
                 int k = convertKey(key.first);
-                m.registerKeyReleased(k >= 0 ? k : KeyPress(key.first).getTextCharacter());
+                m.registerKeyReleased(k >= 0 ? k : juce::KeyPress(key.first).getTextCharacter());
             }
         
         // Releasing modifier keys
@@ -160,7 +160,7 @@ void JuceMurkaBaseComponent::addKeyboardMonitor()
             
             m.registerKeyPressed(convertedKey);
 			auto res = m.doesHaveAWidgetThatHoldsKeyboardFocus();
-            keysPressed[convertedKey] = KeyPress(convertedKey).getTextCharacter();
+            keysPressed[convertedKey] = juce::KeyPress(convertedKey).getTextCharacter();
 
             if (res) {
                 return nil;
