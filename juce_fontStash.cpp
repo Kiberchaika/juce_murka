@@ -55,7 +55,7 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 	context->renderer = (murka::MurkaRendererBase*)renderer;
 #endif
 
-    string path = filename;
+	std::string path = filename;
     font = fonsAddFont(fs, "font", path.c_str());
     if (font == FONS_INVALID) {
         printf("Error loading font (might be a wrong filename): %s\n",path.c_str());
