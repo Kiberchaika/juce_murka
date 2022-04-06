@@ -40,15 +40,15 @@ juceFontStash & juceFontStash::operator=(const juceFontStash & obj) {
 }
 
 void juceFontStash::load(const std::string filename, float fontsize, bool isAbsolutePath, void* renderer) {
-    bool bUseArb = false;
-    
-    cleanup();
-    
-    fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
-    if (fs == NULL) {
-        printf("Could not create stash.\n");
-        return;
-    }
+	bool bUseArb = false;
+
+	cleanup();
+
+	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
+	if (fs == NULL) {
+		printf("Could not create stash.\n");
+		return;
+	}
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
@@ -56,20 +56,52 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 #endif
 
 	std::string path = filename;
-    font = fonsAddFont(fs, "font", path.c_str());
-    if (font == FONS_INVALID) {
-        printf("Error loading font (might be a wrong filename): %s\n",path.c_str());
-        return;
-    }
-    
-    fonsClearState(fs);
-    fonsSetFont(fs, font);
-    fonsSetSize(fs, 1.6 * fontsize);
-    fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
-    
-    //fonsSetColor(fs, white);
-    //fonsSetSpacing(fs, 5.0f);
-    //fonsSetBlur(fs, 10.0f);
+	font = fonsAddFont(fs, "font", path.c_str());
+	if (font == FONS_INVALID) {
+		printf("Error loading font (might be a wrong filename): %s\n", path.c_str());
+		return;
+	}
+
+	fonsClearState(fs);
+	fonsSetFont(fs, font);
+	fonsSetSize(fs, 1.6 * fontsize);
+	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
+
+	//fonsSetColor(fs, white);
+	//fonsSetSpacing(fs, 5.0f);
+	//fonsSetBlur(fs, 10.0f);
+}
+
+void juceFontStash::load(const char* data, int dataSize, float fontsize, bool isAbsolutePath, void* renderer) {
+	bool bUseArb = false;
+
+	cleanup();
+
+	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
+	if (fs == NULL) {
+		printf("Could not create stash.\n");
+		return;
+	}
+
+#if defined(MURKA_OF) || defined(MURKA_JUCE)
+	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+	context->renderer = (murka::MurkaRendererBase*)renderer;
+#endif
+
+	font = fonsAddFontMem(fs, "font", (unsigned char*)data, dataSize, 1);
+	if (font == FONS_INVALID) {
+		printf("Error loading font (might be a wrong data\n");
+		return;
+	}
+
+	fonsClearState(fs);
+	fonsSetFont(fs, font);
+	fonsSetSize(fs, 1.6 * fontsize);
+	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
+
+	//fonsSetColor(fs, white);
+	//fonsSetSpacing(fs, 5.0f);
+	//fonsSetBlur(fs, 10.0f);
 }
 
 void juceFontStash::updateTexture(void* renderer) {
