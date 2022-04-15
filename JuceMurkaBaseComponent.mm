@@ -1,3 +1,4 @@
+#include <juce_opengl/juce_opengl.h>
 #include <AppKit/NSOpenGL.h>
 #include <AppKit/NSWindow.h>
 

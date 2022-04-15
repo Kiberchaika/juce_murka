@@ -24,7 +24,7 @@ extern "C" {
 
 class juceFontStash {
     int font = FONS_INVALID;
-    FONScontext* fs = NULL;
+    FONScontext* fs = nullptr;
    
 	void cleanup();
 
@@ -43,7 +43,9 @@ public:
 	juceFontStash& operator=(const juceFontStash& obj);
 	
     void load(const std::string filename, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
-    void updateTexture(void* renderer = nullptr);
+	void load(const char* data, int dataSize, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
+
+	void updateTexture(void* renderer = nullptr);
     void clearTexture();
 
 	float getLineHeight();
