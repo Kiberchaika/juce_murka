@@ -189,10 +189,6 @@ float juceFontStash::getLineHeight() {
 	 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-	 bounds[0] /= context->renderer->getScreenScale();
-	 bounds[1] /= context->renderer->getScreenScale();
-	 bounds[2] /= context->renderer->getScreenScale();
-	 bounds[3] /= context->renderer->getScreenScale();
 #endif
 	
 	 return juceFontStash::Rectangle{ bounds[0], bounds[1], bounds[2], bounds[3] };
@@ -311,8 +307,6 @@ void juceFontStash::drawString(const std::string & s, float x, float y) {
 	if (font != FONS_INVALID) {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-		x *= context->renderer->getScreenScale();
-		y *= context->renderer->getScreenScale();
 #endif
 		fonsDrawText(fs, x, y, s.c_str(), NULL);
 	}
