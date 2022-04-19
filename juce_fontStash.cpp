@@ -151,6 +151,8 @@ float juceFontStash::getLineHeight() {
 	}
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+#endif
+#if defined(MURKA_OF)
 	lh /= context->renderer->getScreenScale();
 #endif
 	return lh;
@@ -161,6 +163,8 @@ float juceFontStash::getLineHeight() {
 		float width = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, NULL);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+#endif
+#if defined(MURKA_OF)
 		width /= context->renderer->getScreenScale();
 #endif
 		return width;
@@ -174,6 +178,8 @@ float juceFontStash::getLineHeight() {
 		 float height = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, bounds);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+#endif
+#if defined(MURKA_OF)
 		 height /= context->renderer->getScreenScale();
 #endif
 		 return height;
@@ -219,6 +225,8 @@ float juceFontStash::getLineHeight() {
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+#endif
+#if defined(MURKA_OF)
 		 isize /= context->renderer->getScreenScale();
 #endif
 
@@ -287,17 +295,6 @@ float juceFontStash::getLineHeight() {
 		 }
 	 }
 
-#if defined(MURKA_OF) || defined(MURKA_JUCE)
-	 /*
-	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-	 for (size_t i = 0; i < rects.size(); i++) {
-		 rects[i].x /= context->renderer->getScreenScale();
-		 rects[i].y /= context->renderer->getScreenScale();
-		 rects[i].height /= context->renderer->getScreenScale();
-		 rects[i].width /= context->renderer->getScreenScale();
-	 }
-	 */
-#endif
 
 	 return rects;
  }
