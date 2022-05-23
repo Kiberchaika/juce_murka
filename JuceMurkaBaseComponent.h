@@ -38,6 +38,7 @@ public:
 	//==============================================================================
 	void initialise() override {
 		getTopLevelComponent()->addKeyListener(this);
+        setWantsKeyboardFocus(true);
 
 		// murka
 		m.setAppComponent(this);
