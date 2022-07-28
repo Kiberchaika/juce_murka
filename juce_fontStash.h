@@ -42,8 +42,8 @@ public:
     
 	juceFontStash& operator=(const juceFontStash& obj);
 	
-    void load(const std::string filename, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
-	void load(const char* data, int dataSize, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
+    bool load(const std::string filename, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
+	bool load(const char* data, int dataSize, float fontsize, bool isAbsolutePath = false, void* renderer = nullptr);
 
 	void updateTexture(void* renderer = nullptr);
     void clearTexture();

@@ -39,7 +39,7 @@ juceFontStash & juceFontStash::operator=(const juceFontStash & obj) {
 	return *this;
 }
 
-void juceFontStash::load(const std::string filename, float fontsize, bool isAbsolutePath, void* renderer) {
+bool juceFontStash::load(const std::string filename, float fontsize, bool isAbsolutePath, void* renderer) {
 	bool bUseArb = false;
 
 	cleanup();
@@ -47,7 +47,7 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
 	if (fs == NULL) {
 		printf("Could not create stash.\n");
-		return;
+		return false;
 	}
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
@@ -59,7 +59,7 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 	font = fonsAddFont(fs, "font", path.c_str());
 	if (font == FONS_INVALID) {
 		printf("Error loading font (might be a wrong filename): %s\n", path.c_str());
-		return;
+		return false;
 	}
 
 	fonsClearState(fs);
@@ -70,9 +70,11 @@ void juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 	//fonsSetColor(fs, white);
 	//fonsSetSpacing(fs, 5.0f);
 	//fonsSetBlur(fs, 10.0f);
+
+	return true;
 }
 
-void juceFontStash::load(const char* data, int dataSize, float fontsize, bool isAbsolutePath, void* renderer) {
+bool juceFontStash::load(const char* data, int dataSize, float fontsize, bool isAbsolutePath, void* renderer) {
 	bool bUseArb = false;
 
 	cleanup();
@@ -80,7 +82,7 @@ void juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
 	if (fs == NULL) {
 		printf("Could not create stash.\n");
-		return;
+		return false;
 	}
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
@@ -91,7 +93,7 @@ void juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 	font = fonsAddFontMem(fs, "font", (unsigned char*)data, dataSize, 1);
 	if (font == FONS_INVALID) {
 		printf("Error loading font (might be a wrong data\n");
-		return;
+		return false;
 	}
 
 	fonsClearState(fs);
@@ -102,6 +104,8 @@ void juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 	//fonsSetColor(fs, white);
 	//fonsSetSpacing(fs, 5.0f);
 	//fonsSetBlur(fs, 10.0f);
+	
+	return true;
 }
 
 void juceFontStash::updateTexture(void* renderer) {
@@ -148,13 +152,13 @@ float juceFontStash::getLineHeight() {
 	float lh = 0;
 	if (font != FONS_INVALID) {
 		fonsVertMetrics(fs, NULL, NULL, &lh);
-	}
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
 #endif
 #if defined(MURKA_OF)
-	lh /= context->renderer->getScreenScale();
+		lh /= context->renderer->getScreenScale();
 #endif
+	}
 	return lh;
 }
 
@@ -192,11 +196,6 @@ float juceFontStash::getLineHeight() {
 	 if (font != FONS_INVALID) {
 		 fonsTextBounds(fs, x, y, s.c_str(), NULL, bounds);
 	 }
-	 
-#if defined(MURKA_OF) || defined(MURKA_JUCE)
-	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
-	
 	 return juceFontStash::Rectangle{ bounds[0], bounds[1], bounds[2], bounds[3] };
  }
 
