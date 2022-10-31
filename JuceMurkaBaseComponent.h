@@ -103,6 +103,7 @@ public:
         if (key == juce::KeyPress::backspaceKey) return MurkaKey::MURKA_KEY_BACKSPACE;
         if (key == juce::KeyPress::escapeKey) return MurkaKey::MURKA_KEY_ESC;
         if (key == juce::KeyPress::tabKey) return MurkaKey::MURKA_KEY_TAB;
+		if (key == juce::KeyPress::returnKey) return MurkaKey::MURKA_KEY_RETURN;
 
         return -1;
     }
