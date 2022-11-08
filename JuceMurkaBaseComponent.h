@@ -10,7 +10,10 @@
 
 namespace murka {
 
-class JuceMurkaBaseComponent : public juce::OpenGLAppComponent, public juce::KeyListener
+class JuceMurkaBaseComponent : public juce::OpenGLAppComponent
+#ifdef WIN32
+, public juce::KeyListener
+#endif
 {
 public:
 	JuceMurkaBaseComponent() {
@@ -27,17 +30,27 @@ public:
 		keyCommandPressed = false;
 		keyCtrlPressed = false;
 		keyShiftPressed = false;
+
+#ifdef __APPLE__
+        addKeyboardMonitor();
+#endif
 	}
 
 	~JuceMurkaBaseComponent() {
-		// This shuts down the GL system and stops the rendering calls.
+#ifdef __APPLE__
+        removeKeyboardMonitor();
+#endif
+
+        // This shuts down the GL system and stops the rendering calls.
 		openGLContext.deactivateCurrentContext();
 		openGLContext.detach();
 	}
 
 	//==============================================================================
 	void initialise() override {
-		getTopLevelComponent()->addKeyListener(this);
+#ifndef __APPLE__
+        getTopLevelComponent()->addKeyListener(this);
+#endif
         setWantsKeyboardFocus(true);
 
 		// murka
@@ -59,7 +72,7 @@ public:
 		m.closeOpenGLContext();
 	}
 
-#ifdef  WIN32
+#ifdef WIN32
 	void makeTransparent()
 	{
 		HWND hWnd = (HWND)getWindowHandle();
@@ -117,6 +130,7 @@ public:
 
 	}
 
+#ifdef WIN32
 	bool keyPressed(const juce::KeyPress &key, Component *originatingComponent) override {
 		int keyCode = key.getKeyCode();
 		if (keysPressed.find(keyCode) == keysPressed.end()) {
@@ -184,7 +198,8 @@ public:
 		}
 		return true;
 	}
-
+#endif
+    
 	void mouseMove(const juce::MouseEvent& event) override {
 		float desktopScale = openGLContext.getRenderingScale();
 		m.registerMouseMoved(event.x * desktopScale, event.y * desktopScale, 0);
