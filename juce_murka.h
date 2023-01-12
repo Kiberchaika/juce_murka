@@ -14,10 +14,8 @@
   description:
   website:            https://github.com/Kiberchaika/juce_murka
   license:            Free
-
   dependencies:       juce_opengl
   searchpaths:        fontstash/src Murka
-  defines:            MURKA_JUCE JUCE_OPENGL3
 
  END_JUCE_MODULE_DECLARATION
 
