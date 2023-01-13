@@ -28,6 +28,3 @@
 #include "Murka.h"
 #include "MurkaBasicWidgets.h"
 #include "MurkaRenderer.h"
-
-#include "juce_fontStash.h"
-#include "JuceMurkaBaseComponent.h"
