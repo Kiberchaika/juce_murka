@@ -14,10 +14,8 @@
   description:
   website:            https://github.com/Kiberchaika/juce_murka
   license:            Free
-
   dependencies:       juce_opengl
-  searchpaths:        ./fontstash/src ./Murka
-  defines:            MURKA_JUCE JUCE_OPENGL3
+  searchpaths:        fontstash/src Murka
 
  END_JUCE_MODULE_DECLARATION
 
@@ -29,11 +27,7 @@
 
 #include "Murka.h"
 #include "MurkaBasicWidgets.h"
-//#include "DraggableNumberEditor.h"
-//#include "TextField.h"
-//#include "LambdaButton.h"
-//#include "LambdaPanel.h"
-//#include "Pane.h"
-//#include "ScrollBar.h"
-//#include "MosaicLayout.h"
 #include "MurkaRenderer.h"
+
+#include "juce_fontStash.h"
+#include "JuceMurkaBaseComponent.h"
