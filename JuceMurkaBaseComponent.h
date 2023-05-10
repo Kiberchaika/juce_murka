@@ -11,9 +11,9 @@
 namespace murka {
 
 class JuceMurkaBaseComponent : public juce::OpenGLAppComponent
-#ifdef WIN32
+//#ifdef WIN32
 , public juce::KeyListener
-#endif
+//#endif
 {
 public:
 	JuceMurkaBaseComponent() {
@@ -30,16 +30,21 @@ public:
 		keyCommandPressed = false;
 		keyCtrlPressed = false;
 		keyShiftPressed = false;
+        
+        // Giving Murka a way to call this component's grab and release keyboard focus functions so that
+        // the Juce is notified that Murka asks for keyboard events.
+        m.setKeyboardFocusRequestCallbacks([&]() {
+            const MessageManagerLock mmLock;
+            this->grabKeyboardFocus();
+        },
+                                           [&]() {
+            const MessageManagerLock mmLock;
+            this->giveAwayKeyboardFocus();
+        } );
 
-#ifdef __APPLE__
-        addKeyboardMonitor();
-#endif
 	}
 
 	~JuceMurkaBaseComponent() {
-#ifdef __APPLE__
-        removeKeyboardMonitor();
-#endif
 
         // This shuts down the GL system and stops the rendering calls.
 		openGLContext.deactivateCurrentContext();
@@ -48,9 +53,9 @@ public:
 
 	//==============================================================================
 	void initialise() override {
-#ifndef __APPLE__
-        getTopLevelComponent()->addKeyListener(this);
-#endif
+//#ifndef __APPLE__
+        addKeyListener(this);
+//#endif
         setWantsKeyboardFocus(true);
 
 		// murka
@@ -87,10 +92,6 @@ public:
     
     void checkMainWindow();
     
-    void addKeyboardMonitor();
-    void removeKeyboardMonitor();
-    
-    id keyboardMonitor;
 #endif
 
     int convertKey(int key) {
@@ -130,7 +131,6 @@ public:
 
 	}
 
-#ifdef WIN32
 	bool keyPressed(const juce::KeyPress &key, Component *originatingComponent) override {
 		int keyCode = key.getKeyCode();
 		if (keysPressed.find(keyCode) == keysPressed.end()) {
@@ -198,7 +198,6 @@ public:
 		}
 		return true;
 	}
-#endif
     
 	void mouseMove(const juce::MouseEvent& event) override {
 		float desktopScale = openGLContext.getRenderingScale();
