@@ -34,12 +34,12 @@ public:
         // Giving Murka a way to call this component's grab and release keyboard focus functions so that
         // the Juce is notified that Murka asks for keyboard events.
         m.setKeyboardFocusRequestCallbacks([&]() {
-            const MessageManagerLock mmLock;
-            this->grabKeyboardFocus();
+            const juce::MessageManagerLock mmLock;
+			this->grabKeyboardFocus();
         },
                                            [&]() {
-            const MessageManagerLock mmLock;
-            this->giveAwayKeyboardFocus();
+			const juce::MessageManagerLock mmLock;
+			this->giveAwayKeyboardFocus();
         } );
 
 	}
