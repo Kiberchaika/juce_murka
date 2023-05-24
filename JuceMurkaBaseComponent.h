@@ -44,11 +44,8 @@ public:
 
 	}
 
-	~JuceMurkaBaseComponent() {
-
-        // This shuts down the GL system and stops the rendering calls.
-		openGLContext.deactivateCurrentContext();
-		openGLContext.detach();
+	virtual ~JuceMurkaBaseComponent() {
+		shutdownOpenGL();
 	}
 
 	//==============================================================================
