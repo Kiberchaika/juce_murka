@@ -10,11 +10,22 @@
 
 namespace murka {
 
+	
 class JuceMurkaBaseComponent : public juce::OpenGLAppComponent
 //#ifdef WIN32
 , public juce::KeyListener
 //#endif
 {
+	class CallbackWidget : public View<CallbackWidget> {
+	public:
+		std::function<void(Murka&)> callback;
+
+		void internalDraw(Murka& m) {
+			if (callback) callback(m);
+		}
+	};
+
+
 public:
 	JuceMurkaBaseComponent() {
 		// Make sure you set the size of the component after
@@ -68,6 +79,22 @@ public:
 			[&](std::string clipboard) -> void { juce::SystemClipboard::copyTextToClipboard(clipboard); }
 		);
 	}
+
+	void render()
+	{
+		m.startFrame();
+		m.setScreenScale((float)openGLContext.getRenderingScale());
+
+		m.begin();
+
+		auto& callbackWidget = m.prepare<CallbackWidget>({ 0, 0, m.getWindowWidth(), m.getWindowHeight() });
+		callbackWidget.callback = [this](Murka& m) { internalDraw(m); };
+		callbackWidget.draw();
+
+		m.end();
+	}
+
+	virtual void internalDraw(Murka& m) = 0;
 
 	void shutdown() override {
 		// Free any GL objects created for rendering here.
