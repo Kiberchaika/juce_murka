@@ -16,15 +16,6 @@ class JuceMurkaBaseComponent : public juce::OpenGLAppComponent
 , public juce::KeyListener
 //#endif
 {
-	class CallbackWidget : public View<CallbackWidget> {
-	public:
-		std::function<void(Murka&)> callback;
-
-		void internalDraw(Murka& m) {
-			if (callback) callback(m);
-		}
-	};
-
 
 public:
 	JuceMurkaBaseComponent() {
@@ -87,14 +78,12 @@ public:
 
 		m.begin();
 
-		auto& callbackWidget = m.prepare<CallbackWidget>({ 0, 0, m.getWindowWidth(), m.getWindowHeight() });
-		callbackWidget.callback = [this](Murka& m) { internalDraw(m); };
-		callbackWidget.draw();
+		draw();
 
 		m.end();
 	}
 
-	virtual void internalDraw(Murka& m) = 0;
+	virtual void draw() = 0;
 
 	void shutdown() override {
 		// Free any GL objects created for rendering here.
