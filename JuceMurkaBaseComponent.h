@@ -64,6 +64,7 @@ public:
 
 		m.shape = { 0, 0, getWidth(), getHeight() };
 		m.setupScreen();
+		m.setScreenScale((float)openGLContext.getRenderingScale());
 
 		m.setClipboardCallbacks(
 			[&]() -> std::string { return juce::SystemClipboard::getTextFromClipboard().toStdString(); },
@@ -74,7 +75,6 @@ public:
 	void render()
 	{
 		m.startFrame();
-		m.setScreenScale((float)openGLContext.getRenderingScale());
 
 		m.begin();
 
