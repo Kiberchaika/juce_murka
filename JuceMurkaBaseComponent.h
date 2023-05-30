@@ -64,7 +64,6 @@ public:
 
 		m.shape = { 0, 0, getWidth(), getHeight() };
 		m.setupScreen();
-		m.setScreenScale((float)openGLContext.getRenderingScale());
 
 		m.setClipboardCallbacks(
 			[&]() -> std::string { return juce::SystemClipboard::getTextFromClipboard().toStdString(); },
@@ -73,13 +72,15 @@ public:
 	}
 
 	void render()
-	{
+	{ 
+		if (firstFrame) {
+			m.setScreenScale((float)openGLContext.getRenderingScale());
+			firstFrame = false;
+		}
+
 		m.startFrame();
-
 		m.begin();
-
 		draw();
-
 		m.end();
 	}
 
@@ -237,10 +238,11 @@ protected:
 
 private:
 	std::map<int, juce::juce_wchar> keysPressed;
-	bool keyAltPressed;
-	bool keyCommandPressed;
-	bool keyCtrlPressed;
-	bool keyShiftPressed;
+	bool keyAltPressed = false;
+	bool keyCommandPressed = false;
+	bool keyCtrlPressed = false;
+	bool keyShiftPressed = false;
+	bool firstFrame = true;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceMurkaBaseComponent)
 };
