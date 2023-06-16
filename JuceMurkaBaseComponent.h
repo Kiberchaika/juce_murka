@@ -73,9 +73,11 @@ public:
 
 	void render()
 	{ 
-		if (firstFrame) {
-			m.setScreenScale((float)openGLContext.getRenderingScale());
-			firstFrame = false;
+		if (scale != (float)openGLContext.getRenderingScale()) {
+			scale = (float)openGLContext.getRenderingScale();
+			m.setScreenScale(scale);
+			m.updateFontsTextures(&m);
+			m.clearFontsTextures();
 		}
 
 		m.startFrame();
@@ -242,7 +244,7 @@ private:
 	bool keyCommandPressed = false;
 	bool keyCtrlPressed = false;
 	bool keyShiftPressed = false;
-	bool firstFrame = true;
+	float scale = 0;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceMurkaBaseComponent)
 };
