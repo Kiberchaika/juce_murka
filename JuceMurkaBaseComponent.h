@@ -161,7 +161,7 @@ public:
 
 	bool keyStateChanged(bool isKeyDown, juce::Component *originatingComponent) override {
 		if (juce::ModifierKeys::getCurrentModifiers().isAltDown() != keyAltPressed) {
-			keyAltPressed = !keyAltPressed;
+			keyAltPressed = isKeyDown;
 			if (keyAltPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_ALT);
 			}
@@ -171,7 +171,7 @@ public:
 		}
 
 		if (juce::ModifierKeys::getCurrentModifiers().isCtrlDown() != keyCtrlPressed) {
-			keyCtrlPressed = !keyCtrlPressed;
+			keyCtrlPressed = isKeyDown;
 			if (keyCtrlPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_CONTROL);
 			}
@@ -181,7 +181,7 @@ public:
 		}
 
 		if (juce::ModifierKeys::getCurrentModifiers().isShiftDown() != keyShiftPressed) {
-			keyShiftPressed = !keyShiftPressed;
+			keyShiftPressed = isKeyDown;
 			if (keyShiftPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_SHIFT);
 			}
@@ -191,7 +191,7 @@ public:
 		}
 
 		if (juce::ModifierKeys::getCurrentModifiers().isCommandDown() != keyCommandPressed) {
-			keyCommandPressed = !keyCommandPressed;
+			keyCommandPressed = isKeyDown;
 			if (keyCommandPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_COMMAND);
 			}
