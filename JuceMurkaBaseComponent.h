@@ -11,12 +11,8 @@
 namespace murka {
 
 	
-class JuceMurkaBaseComponent : public juce::OpenGLAppComponent
-//#ifdef WIN32
-, public juce::KeyListener
-//#endif
+class JuceMurkaBaseComponent : public juce::OpenGLAppComponent, public juce::KeyListener
 {
-
 public:
 	JuceMurkaBaseComponent() {
 		// Make sure you set the size of the component after
@@ -43,13 +39,18 @@ public:
 			const juce::MessageManagerLock mmLock;
 			this->giveAwayKeyboardFocus();
         } );
-
 	}
 
 	virtual ~JuceMurkaBaseComponent() {
 		shutdownOpenGL();
 	}
 
+	virtual void focusGained(FocusChangeType cause) override {
+		// When the window gains focus, update the state of keys within this component.
+		// This ensures that the component correctly handles key events when it is focused.
+		keyStateChanged(false, this);
+	}
+ 
 	//==============================================================================
 	void initialise() override {
 //#ifndef __APPLE__
