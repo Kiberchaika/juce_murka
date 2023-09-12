@@ -56,24 +56,24 @@ void JuceMurkaBaseComponent::checkMainWindow()
         
         // Releasing modifier keys
 
-        if (keyShiftPressed) {
+        if (shiftKeyPressed) {
             m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_SHIFT);
-            keyShiftPressed = false;
+            shiftKeyPressed = false;
         }
 
-        if (keyCtrlPressed) {
+        if (ctrlKeyPressed) {
             m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_CONTROL);
-            keyCtrlPressed = false;
+            ctrlKeyPressed = false;
         }
 
-        if (keyAltPressed) {
+        if (altKeyPressed) {
             m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_ALT);
-            keyAltPressed = false;
+            altKeyPressed = false;
         }
 
-        if (keyCommandPressed) {
+        if (commandKeyPressed) {
             m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_COMMAND);
-            keyCommandPressed = false;
+            commandKeyPressed = false;
         }
     }
 }
