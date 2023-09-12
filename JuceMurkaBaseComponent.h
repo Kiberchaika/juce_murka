@@ -45,17 +45,9 @@ public:
 		shutdownOpenGL();
 	}
 
-	virtual void focusGained(FocusChangeType cause) override {
-		// When the window gains focus, update the state of keys within this component.
-		// This ensures that the component correctly handles key events when it is focused.
-		keyStateChanged(false, this);
-	}
- 
 	//==============================================================================
 	void initialise() override {
-//#ifndef __APPLE__
         addKeyListener(this);
-//#endif
         setWantsKeyboardFocus(true);
 
 		// murka
@@ -74,6 +66,8 @@ public:
 
 	void render()
 	{ 
+		checkModifierKeys();
+
 		if (scale != (float)openGLContext.getRenderingScale()) {
 			scale = (float)openGLContext.getRenderingScale();
 			m.setScreenScale(scale);
@@ -160,7 +154,7 @@ public:
 		return true;
 	}
 
-	bool keyStateChanged(bool isKeyDown, juce::Component *originatingComponent) override {
+	void checkModifierKeys() {
 		if (juce::ModifierKeys::getCurrentModifiers().isAltDown() != keyAltPressed) {
 			keyAltPressed = juce::ModifierKeys::getCurrentModifiers().isAltDown();
 			if (keyAltPressed) {
@@ -200,7 +194,9 @@ public:
 				m.registerKeyReleased(murka::MurkaKey::MURKA_KEY_COMMAND);
 			}
 		}
+	}
 
+	bool keyStateChanged(bool isKeyDown, juce::Component *originatingComponent) override {
 		for (auto iter = keysPressed.begin(); iter != keysPressed.end(); ++iter) {
 			auto keyCode = iter->first;
 			auto textCharacter = iter->second;
