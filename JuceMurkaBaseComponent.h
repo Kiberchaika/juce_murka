@@ -24,11 +24,6 @@ public:
 		pixelFormat.multisamplingLevel = 8;
 		openGLContext.setPixelFormat(pixelFormat);
 
-		keyAltPressed = false;
-		keyCommandPressed = false;
-		keyCtrlPressed = false;
-		keyShiftPressed = false;
-        
         // Giving Murka a way to call this component's grab and release keyboard focus functions so that
         // the Juce is notified that Murka asks for keyboard events.
         m.setKeyboardFocusRequestCallbacks([&]() {
@@ -155,9 +150,9 @@ public:
 	}
 
 	void checkModifierKeys() {
-		if (juce::ModifierKeys::getCurrentModifiers().isAltDown() != keyAltPressed) {
-			keyAltPressed = juce::ModifierKeys::getCurrentModifiers().isAltDown();
-			if (keyAltPressed) {
+		if (juce::ModifierKeys::getCurrentModifiers().isAltDown() != altKeyPressed) {
+			altKeyPressed = juce::ModifierKeys::getCurrentModifiers().isAltDown();
+			if (altKeyPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_ALT);
 			}
 			else {
@@ -165,9 +160,9 @@ public:
 			}
 		}
 
-		if (juce::ModifierKeys::getCurrentModifiers().isCtrlDown() != keyCtrlPressed) {
-			keyCtrlPressed = juce::ModifierKeys::getCurrentModifiers().isCtrlDown();
-			if (keyCtrlPressed) {
+		if (juce::ModifierKeys::getCurrentModifiers().isCtrlDown() != ctrlKeyPressed) {
+			ctrlKeyPressed = juce::ModifierKeys::getCurrentModifiers().isCtrlDown();
+			if (ctrlKeyPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_CONTROL);
 			}
 			else {
@@ -175,9 +170,9 @@ public:
 			}
 		}
 
-		if (juce::ModifierKeys::getCurrentModifiers().isShiftDown() != keyShiftPressed) {
-			keyShiftPressed = juce::ModifierKeys::getCurrentModifiers().isShiftDown();
-			if (keyShiftPressed) {
+		if (juce::ModifierKeys::getCurrentModifiers().isShiftDown() != shiftKeyPressed) {
+			shiftKeyPressed = juce::ModifierKeys::getCurrentModifiers().isShiftDown();
+			if (shiftKeyPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_SHIFT);
 			}
 			else {
@@ -185,9 +180,9 @@ public:
 			}
 		}
 
-		if (juce::ModifierKeys::getCurrentModifiers().isCommandDown() != keyCommandPressed) {
-			keyCommandPressed = juce::ModifierKeys::getCurrentModifiers().isCommandDown();
-			if (keyCommandPressed) {
+		if (juce::ModifierKeys::getCurrentModifiers().isCommandDown() != commandKeyPressed) {
+			commandKeyPressed = juce::ModifierKeys::getCurrentModifiers().isCommandDown();
+			if (commandKeyPressed) {
 				m.registerKeyPressed(murka::MurkaKey::MURKA_KEY_COMMAND);
 			}
 			else {
@@ -237,10 +232,10 @@ protected:
 
 private:
 	std::map<int, juce::juce_wchar> keysPressed;
-	bool keyAltPressed = false;
-	bool keyCommandPressed = false;
-	bool keyCtrlPressed = false;
-	bool keyShiftPressed = false;
+	bool altKeyPressed = false;
+	bool commandKeyPressed = false;
+	bool ctrlKeyPressed = false;
+	bool shiftKeyPressed = false;
 	float scale = 0;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceMurkaBaseComponent)
