@@ -32,7 +32,10 @@ public:
         },
                                            [&]() {
 			const juce::MessageManagerLock mmLock;
-			this->giveAwayKeyboardFocus();
+            juce::MessageManager::callAsync([&]() { 
+                this->giveAwayKeyboardFocus();
+            });
+			
         } );
 	}
 
