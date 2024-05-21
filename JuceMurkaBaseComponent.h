@@ -149,7 +149,7 @@ public:
 		int k = convertKey(keyCode);
 		m.registerKeyPressed(k >= 0 ? k : keysPressed[keyCode]);
 
-		return true;
+		return m.doesHaveAWidgetThatHoldsKeyboardFocus();
 	}
 
 	void checkModifierKeys() {
@@ -207,7 +207,7 @@ public:
 				break;
 			}
 		}
-		return true;
+		return m.doesHaveAWidgetThatHoldsKeyboardFocus();
 	}
     
 	void mouseMove(const juce::MouseEvent& event) override {
