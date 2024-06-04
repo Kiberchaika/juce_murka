@@ -230,6 +230,11 @@ public:
 		m.registerMouseDragged(event.x * desktopScale, event.y * desktopScale, 0);
 	}
 
+	void mouseWheelMove(const juce::MouseEvent& event, const juce::MouseWheelDetails& wheelDetails) override {
+		float desktopScale = openGLContext.getRenderingScale();
+		m.registerMouseScrolled(wheelDetails.deltaX * desktopScale, wheelDetails.deltaY * desktopScale);
+	}
+
 protected:
 	Murka m;
 
