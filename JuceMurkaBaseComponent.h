@@ -27,12 +27,15 @@ public:
         // Giving Murka a way to call this component's grab and release keyboard focus functions so that
         // the Juce is notified that Murka asks for keyboard events.
         m.setKeyboardFocusRequestCallbacks([&]() {
-            const juce::MessageManagerLock mmLock;
-			this->grabKeyboardFocus();
+			juce::MessageManager::callAsync([&]() {
+				this->grabKeyboardFocus();
+				});
         },
                                            [&]() {
-			const juce::MessageManagerLock mmLock;
-			this->giveAwayKeyboardFocus();
+            juce::MessageManager::callAsync([&]() { 
+                this->giveAwayKeyboardFocus();
+            });
+			
         } );
 	}
 
@@ -147,7 +150,7 @@ public:
 		int k = convertKey(keyCode);
 		m.registerKeyPressed(k >= 0 ? k : keysPressed[keyCode]);
 
-		return true;
+		return m.doesHaveAWidgetThatHoldsKeyboardFocus();
 	}
 
 	void checkModifierKeys() {
@@ -205,7 +208,7 @@ public:
 				break;
 			}
 		}
-		return true;
+		return m.doesHaveAWidgetThatHoldsKeyboardFocus();
 	}
     
 	void mouseMove(const juce::MouseEvent& event) override {
@@ -226,6 +229,11 @@ public:
 	void mouseDrag(const juce::MouseEvent& event) override {
 		float desktopScale = openGLContext.getRenderingScale();
 		m.registerMouseDragged(event.x * desktopScale, event.y * desktopScale, 0);
+	}
+
+	void mouseWheelMove(const juce::MouseEvent& event, const juce::MouseWheelDetails& wheelDetails) override {
+		float desktopScale = openGLContext.getRenderingScale();
+		m.registerMouseScrolled(wheelDetails.deltaX * desktopScale, wheelDetails.deltaY * desktopScale);
 	}
 
 protected:

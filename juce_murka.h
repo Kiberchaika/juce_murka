@@ -15,7 +15,7 @@
   website:            https://github.com/Kiberchaika/juce_murka
   license:            Free
   dependencies:       juce_opengl
-  searchpaths:        fontstash/src Murka
+  searchpaths:        Murka/src fontstash/src
 
  END_JUCE_MODULE_DECLARATION
 

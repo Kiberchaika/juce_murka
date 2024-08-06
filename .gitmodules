@@ -3,4 +3,4 @@
 	url = git@github.com:Kiberchaika/Murka.git
 [submodule "fontstash"]
 	path = fontstash
-	url = git@github.com:Kiberchaika/fontstash.git
+	url = https://github.com/Kiberchaika/fontstash
