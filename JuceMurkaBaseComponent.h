@@ -120,6 +120,7 @@ public:
         if (key == juce::KeyPress::homeKey) return MurkaKey::MURKA_KEY_HOME;
         if (key == juce::KeyPress::endKey) return MurkaKey::MURKA_KEY_END;
         if (key == juce::KeyPress::deleteKey) return MurkaKey::MURKA_KEY_DEL;
+        if (key == juce::KeyPress::spaceKey) return MurkaKey::MURKA_KEY_SPACE;
         if (key == juce::KeyPress::backspaceKey) return MurkaKey::MURKA_KEY_BACKSPACE;
         if (key == juce::KeyPress::escapeKey) return MurkaKey::MURKA_KEY_ESC;
         if (key == juce::KeyPress::tabKey) return MurkaKey::MURKA_KEY_TAB;
