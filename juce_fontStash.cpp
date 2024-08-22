@@ -64,7 +64,14 @@ bool juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 
 	fonsClearState(fs);
 	fonsSetFont(fs, font);
-	fonsSetSize(fs, 1.6 * fontsize);
+
+#if defined(MURKA_OF) || defined(MURKA_JUCE)
+	float scale = context->renderer->getScreenScale();
+	fonsSetSize(fs, scale * fontsize);
+#else
+	fonsSetSize(fs, fontsize);
+#endif
+
 	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
 
 	//fonsSetColor(fs, white);
@@ -96,9 +103,16 @@ bool juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 		return false;
 	}
 
+
 	fonsClearState(fs);
-	fonsSetFont(fs, font);
-	fonsSetSize(fs, 1.6 * fontsize);
+
+#if defined(MURKA_OF) || defined(MURKA_JUCE)
+	float scale = context->renderer->getScreenScale();
+	fonsSetSize(fs, scale * fontsize);
+#else
+	fonsSetSize(fs, fontsize);
+#endif
+
 	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
 
 	//fonsSetColor(fs, white);
@@ -154,8 +168,6 @@ float juceFontStash::getLineHeight() {
 		fonsVertMetrics(fs, NULL, NULL, &lh);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
-#if defined(MURKA_OF)
 		lh /= context->renderer->getScreenScale();
 #endif
 	}
@@ -167,8 +179,6 @@ float juceFontStash::getLineHeight() {
 		float width = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, NULL);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
-#if defined(MURKA_OF)
 		width /= context->renderer->getScreenScale();
 #endif
 		return width;
@@ -182,8 +192,6 @@ float juceFontStash::getLineHeight() {
 		 float height = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, bounds);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
-#if defined(MURKA_OF)
 		 height /= context->renderer->getScreenScale();
 #endif
 		 return height;
@@ -196,7 +204,14 @@ float juceFontStash::getLineHeight() {
 	 if (font != FONS_INVALID) {
 		 fonsTextBounds(fs, x, y, s.c_str(), NULL, bounds);
 	 }
+
+#if defined(MURKA_OF) || defined(MURKA_JUCE)
+	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+	 float scale = context->renderer->getScreenScale();
+	 return juceFontStash::Rectangle{ x + (bounds[0] - x) * scale, y + (bounds[1] - y) * scale, bounds[2] / scale, bounds[3] / scale };
+#else
 	 return juceFontStash::Rectangle{ bounds[0], bounds[1], bounds[2], bounds[3] };
+#endif
  }
 
  
@@ -224,8 +239,6 @@ float juceFontStash::getLineHeight() {
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
-#if defined(MURKA_OF)
 		 isize /= context->renderer->getScreenScale();
 #endif
 
@@ -301,9 +314,6 @@ float juceFontStash::getLineHeight() {
 
 void juceFontStash::drawString(const std::string & s, float x, float y) {
 	if (font != FONS_INVALID) {
-#if defined(MURKA_OF) || defined(MURKA_JUCE)
-		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
-#endif
 		fonsDrawText(fs, x, y, s.c_str(), NULL);
 	}
 }
