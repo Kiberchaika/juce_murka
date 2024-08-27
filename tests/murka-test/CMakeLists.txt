@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.15.0)
 project(murka-tests VERSION 1.2.3)
 
+include(../../cmake/CPM.cmake)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    CPMAddPackage("gh:juce-framework/JUCE#8.0.1")
+endif()
+include(GNUInstallDirs)
+
 ### IDE Generator pre-config ###
 # Xcode: Disable automatic build scheme generation globally.
 #        Instead, we explicitely specify which targets require schemes.
@@ -15,6 +21,8 @@ endif()# IDEs:  Enable grouping of source files into folders in IDEs.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # IDEs:  Create a folder in the IDE with the JUCE Module code.
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects" ON)
+
+juce_add_module("../../" ALIAS_NAMESPACE juce_murka)
 
 # add the plugin targets
 juce_add_plugin(${PROJECT_NAME}

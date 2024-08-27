@@ -15,7 +15,7 @@ MurkatestAudioProcessorEditor::MurkatestAudioProcessorEditor (MurkatestAudioProc
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (500, 300);
+    setSize (300, 150);
 
     _UIBaseComponent = new UIBaseComponent(&p);
     _UIBaseComponent->setSize(getWidth(), getHeight());

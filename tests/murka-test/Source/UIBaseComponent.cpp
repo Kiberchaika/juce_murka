@@ -132,25 +132,25 @@ void UIBaseComponent::draw()
 	/// CHECKBOXES
 	float checkboxSlotHeight = 28;
     
-    auto& oneCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 0,
+    auto& oneCheckbox = m.prepare<TestCheckbox>({ xOffset + 250, yOffset + checkboxSlotHeight * 0,
                                                 200, 20 })
                                                 .controlling(&processor->one_c)
                                                 .withLabel("ONE");
     oneCheckbox.enabled = true;
     oneCheckbox.draw();
         
-    auto& twoCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 1,
+    auto& twoCheckbox = m.prepare<TestCheckbox>({ xOffset + 250, yOffset + checkboxSlotHeight * 1,
                                                 200, 20 })
                                                 .controlling(&processor->two_c)
                                                 .withLabel("TWO");
     twoCheckbox.enabled = true;
     twoCheckbox.draw();
 
-    auto& threeCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 2,
+    auto& threeCheckbox = m.prepare<TestCheckbox>({ xOffset + 250, yOffset + checkboxSlotHeight * 2,
                                                 200, 20 })
                                                 .controlling(&processor->three_c)
                                                 .withLabel("THREE");
-    threeCheckbox.enabled = (processor->three_c);
+    threeCheckbox.enabled = true;
     threeCheckbox.draw();
 
     if (oneCheckbox.changed || twoCheckbox.changed) {

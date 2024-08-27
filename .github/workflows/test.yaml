@@ -83,11 +83,11 @@ jobs:
 
       - name: Set additional env vars for next step
         run: |
-          ARTIFACTS_PATH=${{ env.BUILD_DIR }}/tests/murka-test/murka-test_artefacts/${{ env.BUILD_TYPE }}
+          ARTIFACTS_PATH=${{ env.BUILD_DIR }}/tests/murka-test/murka-tests_artefacts/${{ env.BUILD_TYPE }}
           echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
-          echo "VST3_PATH=$ARTIFACTS_PATH/VST3/murka-test.vst3" >> $GITHUB_ENV
-          echo "AU_PATH=$ARTIFACTS_PATH/AU/murka-test.component" >> $GITHUB_ENV
-          echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/murka-test.app" >> $GITHUB_ENV
+          echo "VST3_PATH=$ARTIFACTS_PATH/VST3/murka-tests.vst3" >> $GITHUB_ENV
+          echo "AU_PATH=$ARTIFACTS_PATH/AU/murka-tests.component" >> $GITHUB_ENV
+          echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/murka-tests.app" >> $GITHUB_ENV
 
       - name: Pluginval
         run: |
