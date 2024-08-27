@@ -37,7 +37,8 @@ void UIBaseComponent::draw()
 
     currentMousePositionJuceScaled = m.mousePosition() / m.getScreenScale();
 
-    m.setColor(200, 200, 200);
+    m.setColor(20, 20, 20);
+    m.setFontFromRawData("InterRegular.ttf", BinaryData::InterRegular_ttf, BinaryData::InterRegular_ttfSize, 12);
 	m.clear();
     
     m.setLineWidth(2);
