@@ -208,7 +208,7 @@ float juceFontStash::getLineHeight() {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
 	 float scale = context->renderer->getScreenScale();
-	 return juceFontStash::Rectangle{ x + (bounds[0] - x) * scale, y + (bounds[1] - y) * scale, bounds[2] / scale, bounds[3] / scale };
+	 return juceFontStash::Rectangle{ x + bounds[0] / scale, y + bounds[1] / scale, bounds[2] / scale, bounds[3] / scale };
 #else
 	 return juceFontStash::Rectangle{ bounds[0], bounds[1], bounds[2], bounds[3] };
 #endif
