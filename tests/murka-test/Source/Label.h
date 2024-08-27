@@ -5,7 +5,7 @@
 
 using namespace murka;
 
-class Label : public murka::View<Label> {
+class TestLabel : public murka::View<TestLabel> {
 public:
     void internalDraw(Murka & m) {
         
@@ -60,12 +60,12 @@ public:
 //    std::string label;
     TextAlignment alignment = TEXT_LEFT;
     
-    Label& withTextAlignment(TextAlignment a) {
+    TestLabel& withTextAlignment(TextAlignment a) {
         alignment = a;
         return *this;
     }
 
-    Label& withText(std::string text) {
+    TestLabel& withText(std::string text) {
         label = text;
         return *this;
     }
@@ -80,7 +80,7 @@ public:
     bool enabled = true;
     bool highlighted = false;
 
-    MURKA_PARAMETER(Label, // class name
+    MURKA_PARAMETER(TestLabel, // class name
                     std::string, // parameter type
                     label, // parameter variable name
                     text, // setter

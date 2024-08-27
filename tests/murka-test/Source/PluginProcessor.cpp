@@ -16,7 +16,6 @@ juce::String MurkatestAudioProcessor::paramOneCheckbox("one_c");
 juce::String MurkatestAudioProcessor::paramTwoCheckbox("two_c");
 juce::String MurkatestAudioProcessor::paramThreeCheckbox("three_c");
 
-
 //==============================================================================
 MurkatestAudioProcessor::MurkatestAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -27,7 +26,7 @@ MurkatestAudioProcessor::MurkatestAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
 #endif
     parameters(*this, &mUndoManager, juce::Identifier("murka-test"),
                {
@@ -49,6 +48,8 @@ MurkatestAudioProcessor::MurkatestAudioProcessor()
                     std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramOneCheckbox, 1), TRANS("One_Checkbox"), one_c),
                     std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramTwoCheckbox, 1), TRANS("Two_Checkbox"), two_c),
                     std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramThreeCheckbox, 1), TRANS("Three_Checkbox"), three_c),
+                })
+
 {
     parameters.addParameterListener(paramOneKnob, this);
     parameters.addParameterListener(paramTwoKnob, this);
@@ -175,7 +176,7 @@ void MurkatestAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     }
 }
 
-void M1PannerAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
+void MurkatestAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 {
     if (parameterID == paramOneKnob) {
         one_k = newValue; // update pannerSettings value from host

@@ -10,7 +10,7 @@
 
 using namespace murka;
 
-class Checkbox : public murka::View<Checkbox> {
+class TestCheckbox : public murka::View<TestCheckbox> {
 public:
     void internalDraw(Murka & m) {
         if (didntInitialiseYet) {
@@ -57,17 +57,17 @@ public:
     std::string label;
     bool* dataToControl = nullptr;
     
-    Checkbox & controlling(bool* dataPointer) {
+    TestCheckbox & controlling(bool* dataPointer) {
         dataToControl = dataPointer;
         return *this;
     }
     
-    Checkbox & withLabel(std::string label_) {
+    TestCheckbox & withLabel(std::string label_) {
         label = label_;
         return *this;
     }
 
-    MURKA_PARAMETER(Checkbox, // class name
+    MURKA_PARAMETER(TestCheckbox, // class name
                     bool, // parameter type
                     enabled, // parameter variable name
                     enable, // setter

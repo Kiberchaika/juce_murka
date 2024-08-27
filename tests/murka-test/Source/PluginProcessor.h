@@ -13,7 +13,7 @@
 //==============================================================================
 /**
 */
-class MurkatestAudioProcessor  : public juce::AudioProcessor
+class MurkatestAudioProcessor  : public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -28,6 +28,7 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
+    void parameterChanged(const juce::String &parameterID, float newValue);
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
@@ -62,14 +63,17 @@ public:
     static juce::String paramTwoCheckbox;
     static juce::String paramThreeCheckbox;
 
-    float one_k = 5f;
+    float one_k = 5.0f;
     float two_k = 0.7f;
-    float three_k = 0f;
+    float three_k = 0.0f;
     bool one_c = false;
     bool two_c = true;
     bool three_c = false;
 
 private:
+    juce::UndoManager mUndoManager;
+    juce::AudioProcessorValueTreeState parameters;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MurkatestAudioProcessor)
 };

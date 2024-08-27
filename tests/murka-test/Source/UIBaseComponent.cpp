@@ -49,9 +49,10 @@ void UIBaseComponent::draw()
 	int yOffset = 40;
 	int knobWidth = 70;
 	int knobHeight = 87;
+    int labelOffsetY = 25;
 
 	// X
-    auto& oneKnob = m.prepare<Knob>(MurkaShape(xOffset + 10, yOffset, knobWidth, knobHeight))
+    auto& oneKnob = m.prepare<TestKnob>(MurkaShape(xOffset + 10, yOffset, knobWidth, knobHeight))
                                 .controlling(&processor->one_k);
     oneKnob.rangeFrom = 1;
     oneKnob.rangeTo = 100;
@@ -69,7 +70,7 @@ void UIBaseComponent::draw()
         processor->parameterChanged(processor->paramOneKnob, processor->one_k);
 	}
     
-    auto& oneLabel = m.prepare<Label>(MurkaShape(xOffset + 10 + LabelOffsetX, yOffset - LabelOffsetY, knobWidth, knobHeight));
+    auto& oneLabel = m.prepare<TestLabel>(MurkaShape(xOffset + 10, yOffset - labelOffsetY, knobWidth, knobHeight));
     oneLabel.label = "ONE";
     oneLabel.alignment = TEXT_CENTER;
     oneLabel.enabled = true;
@@ -77,7 +78,7 @@ void UIBaseComponent::draw()
     oneLabel.draw();
 
 	// Y
-    auto& twoKnob = m.prepare<Knob>(MurkaShape(xOffset + 100, yOffset, knobWidth, knobHeight))
+    auto& twoKnob = m.prepare<TestKnob>(MurkaShape(xOffset + 100, yOffset, knobWidth, knobHeight))
                                 .controlling(&processor->two_k);
     twoKnob.rangeFrom = -1.0;
     twoKnob.rangeTo = 1.0;
@@ -94,15 +95,15 @@ void UIBaseComponent::draw()
         processor->parameterChanged(processor->paramTwoKnob, processor->two_k);
     }
     
-	m.setColor(ENABLED_PARAM);
-    auto& twoLabel = m.prepare<Label>(MurkaShape(xOffset + 100 + LabelOffsetX, yOffset - LabelOffsetY, knobWidth, knobHeight));
+	m.setColor(200, 200, 200);
+    auto& twoLabel = m.prepare<TestLabel>(MurkaShape(xOffset + 100, yOffset - labelOffsetY, knobWidth, knobHeight));
     twoLabel.label = "TWO";
     twoLabel.alignment = TEXT_CENTER;
     twoLabel.enabled = true;
     twoLabel.highlighted = twoKnob.hovered;
     twoLabel.draw();
 
-    auto& threeKnob = m.prepare<Knob>(MurkaShape(xOffset + 190, yOffset, knobWidth, knobHeight))
+    auto& threeKnob = m.prepare<TestKnob>(MurkaShape(xOffset + 190, yOffset, knobWidth, knobHeight))
                                 .controlling(&processor->three_k);
     threeKnob.rangeFrom = -180;
     threeKnob.rangeTo = 180;
@@ -120,7 +121,7 @@ void UIBaseComponent::draw()
         processor->parameterChanged(processor->paramThreeKnob, processor->three_k);
     }
     
-    auto& threeLabel = m.prepare<Label>(MurkaShape(xOffset + 190 + LabelOffsetX, yOffset - LabelOffsetY, knobWidth, knobHeight));
+    auto& threeLabel = m.prepare<TestLabel>(MurkaShape(xOffset + 190, yOffset - labelOffsetY, knobWidth, knobHeight));
     threeLabel.label = "THREE";
     threeLabel.alignment = TEXT_CENTER;
     threeLabel.enabled = true;
@@ -130,45 +131,49 @@ void UIBaseComponent::draw()
 	/// CHECKBOXES
 	float checkboxSlotHeight = 28;
     
-    auto& oneCheckbox = m.prepare<Checkbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 0,
+    auto& oneCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 0,
                                                 200, 20 })
                                                 .controlling(&processor->one_c)
                                                 .withLabel("ONE");
     oneCheckbox.enabled = true;
     oneCheckbox.draw();
         
-    auto& twoCheckbox = m.prepare<Checkbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 1,
+    auto& twoCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 1,
                                                 200, 20 })
                                                 .controlling(&processor->two_c)
                                                 .withLabel("TWO");
     twoCheckbox.enabled = true;
     twoCheckbox.draw();
 
-    auto& threeCheckbox = m.prepare<Checkbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 2,
+    auto& threeCheckbox = m.prepare<TestCheckbox>({ xOffset + 240, yOffset + checkboxSlotHeight * 2,
                                                 200, 20 })
                                                 .controlling(&processor->three_c)
                                                 .withLabel("THREE");
     threeCheckbox.enabled = (processor->three_c);
     threeCheckbox.draw();
 
-    if (twoCheckbox.changed || threeCheckbox.changed) {
+    if (oneCheckbox.changed || twoCheckbox.changed) {
         if (twoCheckbox.checked) {
             if (threeCheckbox.checked) {
-                processor->parameterChanged(processor->one_c, true);
-                processor->parameterChanged(processor->two_c, true);
+                processor->parameterChanged(processor->paramOneCheckbox, true);
+                processor->parameterChanged(processor->paramTwoCheckbox, true);
             } else {
-                processor->parameterChanged(processor->one_c, true);
-                processor->parameterChanged(processor->two_c, false);
+                processor->parameterChanged(processor->paramOneCheckbox, true);
+                processor->parameterChanged(processor->paramTwoCheckbox, false);
             }
         } else {
-            processor->parameterChanged(processor->one_c, false);
-            processor->parameterChanged(processor->two_c, false);
+            processor->parameterChanged(processor->paramOneCheckbox, false);
+            processor->parameterChanged(processor->paramTwoCheckbox, false);
         }
+    }
+
+    if (threeCheckbox.changed) {
+        processor->parameterChanged(processor->paramThreeCheckbox, !processor->three_c);
     }
     
     /// label
     m.setColor(200, 255);
-    auto& testLabel = m.prepare<Label>(MurkaShape(m.getSize().width() - 100, m.getSize().height(), 80, 20));
+    auto& testLabel = m.prepare<TestLabel>(MurkaShape(m.getSize().width() - 100, m.getSize().height(), 80, 20));
     testLabel.label = "Test Label";
     testLabel.alignment = TEXT_CENTER;
     testLabel.draw();

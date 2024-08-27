@@ -54,8 +54,27 @@ target_sources(${PROJECT_NAME} PRIVATE
 set_target_properties("${PROJECT_NAME}" PROPERTIES FOLDER "")
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${SourceFiles})
 
+# include for default font
+add_subdirectory(Resources)
+
 # add required flags
 juce_generate_juce_header(${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE juce::juce_audio_basics juce::juce_audio_devices juce::juce_audio_formats juce::juce_audio_plugin_client juce::juce_audio_processors juce::juce_audio_utils juce::juce_core juce::juce_data_structures juce::juce_events juce::juce_graphics juce::juce_gui_basics juce::juce_gui_extra juce::juce_opengl juce_murka)
-target_link_libraries(${PROJECT_NAME} PRIVATE Resources PUBLIC juce::juce_recommended_warning_flags juce::juce_recommended_config_flags juce::juce_recommended_lto_flags)
+
+### IDE Generator post-config ###
+# IDEs:  Move the "shared code" source group (main target) out of the "Targets" folder
+#        to the top level.
+set_target_properties("${PROJECT_NAME}" PROPERTIES FOLDER "")
+
+# IDEs:  Organise source file grouping.
+get_target_property(project_sources "${PROJECT_NAME}" SOURCES)
+
+#   If JuceHeader.h is generated, remove it from the source file list and handle it individually.
+get_target_property(juce_library_code "${PROJECT_NAME}" JUCE_GENERATED_SOURCES_DIRECTORY)
+set(juce_header "${juce_library_code}/JuceHeader.h")
+list(REMOVE_ITEM project_sources "${juce_header}")
+
+#   Place JuceHeader.h and the associated CMake Rule file into a "JUCE Library Code" folder.
+source_group("JUCE Library Code" FILES "${juce_header}")
+source_group("JUCE Library Code/CMake Rules" FILES "${juce_header}.rule")

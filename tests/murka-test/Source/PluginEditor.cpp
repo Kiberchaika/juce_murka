@@ -11,7 +11,7 @@
 
 //==============================================================================
 MurkatestAudioProcessorEditor::MurkatestAudioProcessorEditor (MurkatestAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.

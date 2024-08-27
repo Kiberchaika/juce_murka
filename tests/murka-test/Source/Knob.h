@@ -6,13 +6,13 @@
 
 using namespace murka;
 
-class Knob : public murka::View<Knob> {
+class TestKnob : public murka::View<TestKnob> {
 public:
     void internalDraw(Murka & m) {
         float* data = dataToControl;
 
         bool isInside = isHovered() * (!editingTextNow);
-        changed = false; // false unless the user changed a value using this knob
+        changed = false; // false unless the user changed a value using this TestKnob
         hovered = isInside + draggingNow; // for external views to be highlighted too if needed
         bool hoveredLocal = hovered + externalHover; // shouldn't propel hoveredLocal outside so it doesn't feedback
 
@@ -21,9 +21,9 @@ public:
         }
         
         if (enabled) {
-            m.setColor(ENABLED_PARAM);
+            m.setColor(200, 200, 200);
         } else {
-            m.setColor(DISABLED_PARAM);
+            m.setColor(20, 20, 20);
         }
 
         m.pushStyle();
@@ -38,11 +38,11 @@ public:
                      shape.size.x * (0.25 + A(0.01 * hoveredLocal)));
         
         // "Inner" circle
-        m.setColor(BACKGROUND_GREY);
+        m.setColor(60, 60, 60);
         m.drawCircle(shape.size.x / 2,
                      shape.size.y * 0.35,
                      shape.size.x * 0.25 - 2 * (width + A(0.5 * hoveredLocal)));
-        m.setColor(BACKGROUND_GREY);
+        m.setColor(60, 60, 60);
         
        // A grey colored rectangle that rotates
         m.pushMatrix();
@@ -156,7 +156,7 @@ public:
         // Action
 
         if ((mouseDownPressed(0)) && (!isHovered()) && (editingTextNow)) {
-            // Pressed outside the knob widget while editing text. Aborting the text edit
+            // Pressed outside the TestKnob widget while editing text. Aborting the text edit
             editingTextNow = false;
             deleteTheTextField();
         }
@@ -177,7 +177,7 @@ public:
             cursorShow();
         }
         
-        // Setting knob value to default if pressed alt while clicking
+        // Setting TestKnob value to default if pressed alt while clicking
         bool shouldSetDefault = isKeyHeld(murka::MurkaKey::MURKA_KEY_ALT) && mouseDownPressed(0);
         
         // Don't set default by doubleclick if the mouse is in the Label/Text editor zone
@@ -239,7 +239,7 @@ public:
     
     float speed = 250.;
     bool enabled = true;
-    bool externalHover = false; // for Pitch wheel to control the knob
+    bool externalHover = false; // for Pitch wheel to control the TestKnob
     int floatingPointPrecision = 0;
     std::function<void()> cursorHide, cursorShow;
     bool isEndlessRotary = false;
@@ -248,7 +248,7 @@ public:
     bool changed = false;
     bool hovered = false;
 
-    Knob & withParameters(float rangeFrom_,
+    TestKnob & withParameters(float rangeFrom_,
                             float rangeTo_,
                             std::string postfix_ = "",
                             std::string prefix_ = "",
@@ -276,7 +276,7 @@ public:
         return *this;
     }
     
-    Knob & controlling(float* dataPointer) {
+    TestKnob & controlling(float* dataPointer) {
         dataToControl = dataPointer;
         return *this;
     }

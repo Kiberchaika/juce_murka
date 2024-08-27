@@ -4,6 +4,8 @@
 
 #include "juce_murka/JuceMurkaBaseComponent.h"
 
+#include "PluginProcessor.h"
+
 #include "Label.h"
 #include "Knob.h"
 #include "Checkbox.h"
