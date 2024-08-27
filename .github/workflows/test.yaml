@@ -1,0 +1,96 @@
+# Credit: Referenced from https://github.com/sudara/pamplejuce project
+
+name: Test
+
+on: [push, pull_request, workflow_dispatch]
+
+# When pushing new commits, cancel any running builds on that branch
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUILD_TYPE: Debug
+  BUILD_DIR: build
+  DISPLAY: :0 # linux pluginval needs this
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
+  SCCACHE_GHA_ENABLED: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_and_test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false # show all errors for each platform (vs. cancel jobs on error)
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            pluginval-binary: ./pluginval
+            extra-build-flags: --parallel 4
+          - name: macOS
+            os: macos-latest
+            pluginval-binary: pluginval.app/Contents/MacOS/pluginval
+            extra-flags: -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+            extra-build-flags: --parallel 4
+          - name: Windows
+            os: windows-latest
+            pluginval-binary: ./pluginval.exe
+
+    steps:
+      # Use clang on Linux so we don't introduce a 3rd compiler (Windows and macOS use MSVC and Clang)
+      - name: Set up Clang
+        if: runner.os == 'Linux'
+        uses: egor-tensin/setup-clang@v1
+
+      # This also starts up our "fake" display (Xvfb), needed for pluginval
+      - name: Install JUCE's Linux Deps
+        if: runner.os == 'Linux'
+        # Thanks to McMartin & co https://forum.juce.com/t/list-of-juce-dependencies-under-linux/15121/44
+        run: |
+          sudo apt-get update && sudo apt install libasound2-dev libx11-dev libxinerama-dev libxext-dev libfreetype6-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev xvfb ninja-build freeglut3-dev
+          sudo /usr/bin/Xvfb $DISPLAY &
+
+      - name: Install macOS Deps
+        if: ${{ matrix.name == 'macOS' }}
+        run: brew install ninja osxutils
+
+      - name: Checkout entire project
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          lfs: true
+          fetch-depth: 1
+
+      - name: Cache the build
+        if: ${{ matrix.name != 'Windows' }}
+        uses: mozilla-actions/sccache-action@v0.0.4
+
+      - name: Configure
+        if: ${{ matrix.name != 'Windows' }}
+        run: cmake -B ${{ env.BUILD_DIR }} -G Ninja -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE}} -DJUCE_MURKA_TESTS=ON -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ${{ matrix.extra-flags }} .
+
+      - name: Configure (Windows)
+        if: ${{ matrix.name == 'Windows' }}
+        run: cmake -B ${{ env.BUILD_DIR }} -G "Visual Studio 17 2022"  -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE}} -DJUCE_MURKA_TESTS=ON ${{ matrix.extra-flags }} .
+
+      - name: Build
+        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }} ${{ matrix.extra-build-flags }}
+
+      - name: Set additional env vars for next step
+        run: |
+          ARTIFACTS_PATH=${{ env.BUILD_DIR }}/tests/murka-test/murka-tests_artefacts/${{ env.BUILD_TYPE }}
+          echo "ARTIFACTS_PATH=$ARTIFACTS_PATH" >> $GITHUB_ENV
+          echo "VST3_PATH=$ARTIFACTS_PATH/VST3/murka-tests.vst3" >> $GITHUB_ENV
+          echo "AU_PATH=$ARTIFACTS_PATH/AU/murka-tests.component" >> $GITHUB_ENV
+          echo "STANDALONE_PATH=$ARTIFACTS_PATH/Standalone/murka-tests.app" >> $GITHUB_ENV
+
+      - name: Pluginval
+        run: |
+          curl -LO "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${{ matrix.name }}.zip"
+          7z x pluginval_${{ matrix.name }}.zip
+          ${{ matrix.pluginval-binary }} --strictness-level 10 --verbose --validate-in-process "${{ env.VST3_PATH }}"
