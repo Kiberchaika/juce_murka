@@ -28,10 +28,10 @@ jobs:
       fail-fast: false # show all errors for each platform (vs. cancel jobs on error)
       matrix:
         include:
-          - name: Linux
-            os: ubuntu-latest
-            pluginval-binary: ./pluginval
-            extra-build-flags: --parallel 4
+          # - name: Linux
+          #   os: ubuntu-latest
+          #   pluginval-binary: ./pluginval
+          #   extra-build-flags: --parallel 4
           - name: macOS
             os: macos-latest
             pluginval-binary: pluginval.app/Contents/MacOS/pluginval

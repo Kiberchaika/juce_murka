@@ -1,4 +1,11 @@
 # JUCE Murka
+![](https://raw.githubusercontent.com/Kiberchaika/Murka/master/murka_logo.jpg?raw=true)
+
+Murka is a lightweight UI library aimed at a modern, rich, GPU-accelerated and highly interactive audio plugin UI design. It supports JUCE 7 but it's not dependent on it.
+
+Inspired by ImGUI, it's an "immediate mode" UI. It means that it doesn't require you to design an explicit hierarchy, you write your draw and interaction code in a single draw thread, without managing the widgets lifecycle or input thread interaction with the draw thread.
+
+Murka is designed to make it as easy as possible to create custom widgets with real-time feedback. It requires some knowledge of OpenGL to use it to the fullest but provides drawing functions for fonts and basic shapes.
 
 ## Overview
 
@@ -47,5 +54,8 @@ private:
 };
 
 ```
+
+### TODO
+- Test and resolve linux target and uncomment the [linux tests](https://github.com/Kiberchaika/juce_murka/blob/main/.github/workflows/test.yaml#L31-L34)
 
 (c) 2024
