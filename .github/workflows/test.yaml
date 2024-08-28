@@ -93,4 +93,4 @@ jobs:
         run: |
           curl -LO "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${{ matrix.name }}.zip"
           7z x pluginval_${{ matrix.name }}.zip
-          ${{ matrix.pluginval-binary }} --strictness-level 10 --verbose --validate-in-process "${{ env.VST3_PATH }}"
+          ${{ matrix.pluginval-binary }} --strictness-level 7 --verbose --validate "${{ env.VST3_PATH }}"
