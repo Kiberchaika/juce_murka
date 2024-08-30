@@ -314,7 +314,13 @@ float juceFontStash::getLineHeight() {
 
 void juceFontStash::drawString(const std::string & s, float x, float y) {
 	if (font != FONS_INVALID) {
+#if defined(MURKA_OF) || defined(MURKA_JUCE)
+		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		float scale = context->renderer->getScreenScale();
+		fonsDrawText(fs, x * scale, y * scale, s.c_str(), NULL);
+#else
 		fonsDrawText(fs, x, y, s.c_str(), NULL);
+#endif
 	}
 }
 
