@@ -188,13 +188,13 @@ void MurkatestAudioProcessor::parameterChanged(const juce::String &parameterID, 
         three_k = newValue; // update pannerSettings value from host
         parameters.getParameter(paramThreeKnob)->setValue(newValue);
     } else if (parameterID == paramOneCheckbox) {
-        one_c = newValue; // update pannerSettings value from host
+        one_c = (bool)newValue; // update pannerSettings value from host
         parameters.getParameter(paramOneCheckbox)->setValue(newValue);
     } else if (parameterID == paramTwoCheckbox) {
-        two_c = newValue; // update pannerSettings value from host
+        two_c = (bool)newValue; // update pannerSettings value from host
         parameters.getParameter(paramTwoCheckbox)->setValue(newValue);
     } else if (parameterID == paramThreeCheckbox) {
-        three_c = newValue; // update pannerSettings value from host
+        three_c = (bool)newValue; // update pannerSettings value from host
         parameters.getParameter(paramThreeCheckbox)->setValue(newValue);
     }
 }
@@ -211,20 +211,67 @@ juce::AudioProcessorEditor* MurkatestAudioProcessor::createEditor()
 }
 
 //==============================================================================
+juce::XmlElement* addXmlElement(juce::XmlElement& root, juce::String paramName, juce::String value)
+{
+    juce::XmlElement* el = root.createNewChildElement("param_" + paramName);
+    el->setAttribute("value", juce::String(value));
+    return el;
+}
+
+double getParameterDoubleFromXmlElement(juce::XmlElement* xml, juce::String paramName, double defVal)
+{
+    if (xml->getChildByName("param_" + paramName) && xml->getChildByName("param_" + paramName)->hasAttribute("value")) {
+        double val = xml->getChildByName("param_" + paramName)->getDoubleAttribute("value", defVal);
+        if (std::isnan(val)) {
+            return defVal;
+        }
+        return val;
+    }
+    return defVal;
+}
+
+int getParameterIntFromXmlElement(juce::XmlElement* xml, juce::String paramName, int defVal)
+{
+    if (xml->getChildByName("param_" + paramName) && xml->getChildByName("param_" + paramName)->hasAttribute("value")) {
+        return xml->getChildByName("param_" + paramName)->getDoubleAttribute("value", defVal);
+    }
+    return defVal;
+}
+
 void MurkatestAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    auto state = parameters.copyState();
-    std::unique_ptr<juce::XmlElement> xml(state.createXml());
-    copyXmlToBinary(*xml, destData);
+    // Store the parameters in the memory block.
+    juce::MemoryOutputStream stream(destData, false);
+    stream.writeString("murka_params"); // write the last major prefix
+    juce::XmlElement root("Root");
+    addXmlElement(root, paramOneKnob, juce::String(parameters.getParameter(paramOneKnob)->getValue()));
+    addXmlElement(root, paramTwoKnob, juce::String(parameters.getParameter(paramTwoKnob)->getValue()));
+    addXmlElement(root, paramThreeKnob, juce::String(parameters.getParameter(paramThreeKnob)->getValue()));
+    addXmlElement(root, paramOneCheckbox, juce::String(parameters.getParameter(paramOneCheckbox)->getValue() ? 1 : 0));
+    addXmlElement(root, paramTwoCheckbox, juce::String(parameters.getParameter(paramTwoCheckbox)->getValue() ? 1 : 0));
+    addXmlElement(root, paramThreeCheckbox, juce::String(parameters.getParameter(paramThreeCheckbox)->getValue()? 1 : 0));
+    
+    juce::String strDoc = root.createDocument(juce::String(""), false, false);
+    stream.writeString(strDoc);
 }
 
 void MurkatestAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
- 
-    if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(parameters.state.getType()))
-            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+    // Restore the parameters from the memory block,
+    // whose contents will have been created by the getStateInformation() call.
+    juce::MemoryInputStream input(data, sizeInBytes, false);
+    auto prefix = input.readString();
+    juce::XmlDocument doc(input.readString());
+    std::unique_ptr<juce::XmlElement> root(doc.getDocumentElement());
+    
+    if (!prefix.isEmpty() && (prefix == "murka_params")) {
+        parameterChanged(paramOneKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramOneKnob, parameters.getParameter(paramOneKnob)->getDefaultValue()));
+        parameterChanged(paramTwoKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramTwoKnob, parameters.getParameter(paramTwoKnob)->getDefaultValue()));
+        parameterChanged(paramThreeKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramThreeKnob, parameters.getParameter(paramThreeKnob)->getDefaultValue()));
+        parameterChanged(paramOneCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramOneCheckbox, parameters.getParameter(paramOneCheckbox)->getDefaultValue()));
+        parameterChanged(paramTwoCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramTwoCheckbox, parameters.getParameter(paramTwoCheckbox)->getDefaultValue()));
+        parameterChanged(paramThreeCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramThreeCheckbox, parameters.getParameter(paramThreeCheckbox)->getDefaultValue()));
+    }
 }
 
 //==============================================================================
