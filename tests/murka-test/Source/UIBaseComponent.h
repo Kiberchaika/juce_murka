@@ -44,7 +44,7 @@ private:
 	};
 	std::function<void()> cursorShowAndTeleportBack = [&]() {
 		setMouseCursor(juce::MouseCursor::NormalCursor);
-        juce::Desktop::setMousePosition(localPointToGlobal(juce::Point<int>(cachedMousePositionWhenMouseWasHidden.x, cachedMousePositionWhenMouseWasHidden.y)));
+        juce::Desktop::setMousePosition(localPointToGlobal(juce::Point<int>((int)cachedMousePositionWhenMouseWasHidden.x, (int)cachedMousePositionWhenMouseWasHidden.y)));
 	};
 	std::function<void(int, int)> teleportCursor = [&](int x, int y) {
 		//

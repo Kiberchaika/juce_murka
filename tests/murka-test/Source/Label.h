@@ -9,10 +9,6 @@ class TestLabel : public murka::View<TestLabel> {
 public:
     void internalDraw(Murka & m) {
         
-        bool isInside = inside();
-        //* !areInteractiveChildrenHovered(c) *
-        //hasMouseFocus(m);
-
 		auto font = m.getCurrentFont();
 		if (customFont) {
 			font = font;
@@ -54,7 +50,7 @@ public:
 			//ofDrawLine(0, context.getSize().y / 2, context.getSize().x, context.getSize().y / 2);
 			//context.renderer->setColor(255);
 			//ofDrawLine(0, context.getSize().y, context.getSize().x, context.getSize().y);
-	};
+	}
 
 	// Here go parameters and any parameter convenience constructors. You need to define something called Parameters, even if it's NULL.
 //    std::string label;

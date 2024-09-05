@@ -24,12 +24,9 @@ void UIBaseComponent::initialise()
 
 void UIBaseComponent::draw()
 {
-    // This clears the context with our background.
-    //juce::OpenGLHelpers::clear(juce::Colour(255.0, 198.0, 30.0));
-    
-    float scale = (float)openGLContext.getRenderingScale() * 0.7; // (Desktop::getInstance().getMainMouseSource().getScreenPosition().x / 300.0); //  0.7;
+    float scale = (float)openGLContext.getRenderingScale() * 0.7f;
 
-    if (scale != m.getScreenScale()) {
+    if (std::fabs(scale - m.getScreenScale()) > std::numeric_limits<float>::epsilon()) { // safer way to compare two floats with the lhs being greater than epsilon means (lhs != rhs)
         m.setScreenScale(scale);
         m.updateFontsTextures(&m);
         m.clearFontsTextures();
@@ -85,7 +82,7 @@ void UIBaseComponent::draw()
     twoKnob.rangeTo = 1.0;
     twoKnob.floatingPointPrecision = 1;
     twoKnob.speed = knobSpeed;
-    twoKnob.defaultValue = 0.7;
+    twoKnob.defaultValue = 0.7f;
     twoKnob.isEndlessRotary = false;
     twoKnob.enabled = true;
     twoKnob.cursorHide = cursorHide;
