@@ -59,9 +59,6 @@ public:
     static juce::String paramOneKnob;
     static juce::String paramTwoKnob;
     static juce::String paramThreeKnob;
-    static juce::String paramOneCheckbox;
-    static juce::String paramTwoCheckbox;
-    static juce::String paramThreeCheckbox;
 
     float one_k = 5.0f;
     float two_k = 0.7f;

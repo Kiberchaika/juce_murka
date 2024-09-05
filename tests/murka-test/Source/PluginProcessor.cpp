@@ -12,9 +12,6 @@
 juce::String MurkatestAudioProcessor::paramOneKnob("one_k");
 juce::String MurkatestAudioProcessor::paramTwoKnob("two_k");
 juce::String MurkatestAudioProcessor::paramThreeKnob("three_k");
-juce::String MurkatestAudioProcessor::paramOneCheckbox("one_c");
-juce::String MurkatestAudioProcessor::paramTwoCheckbox("two_c");
-juce::String MurkatestAudioProcessor::paramThreeCheckbox("three_c");
 
 //==============================================================================
 MurkatestAudioProcessor::MurkatestAudioProcessor()
@@ -45,18 +42,12 @@ MurkatestAudioProcessor::MurkatestAudioProcessor()
                                                             juce::NormalisableRange<float>(-100.0f, 100.0f, 0.01f), three_k, "", juce::AudioProcessorParameter::genericParameter,
                                                             [](float v, int) { return juce::String (v, 1); },
                                                             [](const juce::String& t) { return t.dropLastCharacters(3).getFloatValue(); }),
-                    std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramOneCheckbox, 1), TRANS("One_Checkbox"), one_c),
-                    std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramTwoCheckbox, 1), TRANS("Two_Checkbox"), two_c),
-                    std::make_unique<juce::AudioParameterBool>(juce::ParameterID(paramThreeCheckbox, 1), TRANS("Three_Checkbox"), three_c),
                 })
 
 {
     parameters.addParameterListener(paramOneKnob, this);
     parameters.addParameterListener(paramTwoKnob, this);
     parameters.addParameterListener(paramThreeKnob, this);
-    parameters.addParameterListener(paramOneCheckbox, this);
-    parameters.addParameterListener(paramTwoCheckbox, this);
-    parameters.addParameterListener(paramThreeCheckbox, this);
 }
 
 MurkatestAudioProcessor::~MurkatestAudioProcessor()
@@ -187,15 +178,6 @@ void MurkatestAudioProcessor::parameterChanged(const juce::String &parameterID, 
     } else if (parameterID == paramThreeKnob) {
         three_k = newValue; // update pannerSettings value from host
         parameters.getParameter(paramThreeKnob)->setValue(newValue);
-    } else if (parameterID == paramOneCheckbox) {
-        one_c = (bool)newValue; // update pannerSettings value from host
-        parameters.getParameter(paramOneCheckbox)->setValue(newValue);
-    } else if (parameterID == paramTwoCheckbox) {
-        two_c = (bool)newValue; // update pannerSettings value from host
-        parameters.getParameter(paramTwoCheckbox)->setValue(newValue);
-    } else if (parameterID == paramThreeCheckbox) {
-        three_c = (bool)newValue; // update pannerSettings value from host
-        parameters.getParameter(paramThreeCheckbox)->setValue(newValue);
     }
 }
 
@@ -246,13 +228,8 @@ void MurkatestAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     juce::XmlElement root("Root");
     addXmlElement(root, paramOneKnob, juce::String(parameters.getParameter(paramOneKnob)->getValue()));
     addXmlElement(root, paramTwoKnob, juce::String(parameters.getParameter(paramTwoKnob)->getValue()));
-    addXmlElement(root, paramThreeKnob, juce::String(parameters.getParameter(paramThreeKnob)->getValue()));
-    addXmlElement(root, paramOneCheckbox, juce::String(parameters.getParameter(paramOneCheckbox)->getValue() ? 1 : 0));
-    addXmlElement(root, paramTwoCheckbox, juce::String(parameters.getParameter(paramTwoCheckbox)->getValue() ? 1 : 0));
-    addXmlElement(root, paramThreeCheckbox, juce::String(parameters.getParameter(paramThreeCheckbox)->getValue()? 1 : 0));
-    
-    juce::String strDoc = root.createDocument(juce::String(""), false, false);
-    stream.writeString(strDoc);
+    addXmlElement(root, paramThreeKnob, juce::String(parameters.getParameter(paramThreeKnob)->getValue()));    
+    stream.writeString(root.toString());
 }
 
 void MurkatestAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -268,9 +245,6 @@ void MurkatestAudioProcessor::setStateInformation (const void* data, int sizeInB
         parameterChanged(paramOneKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramOneKnob, parameters.getParameter(paramOneKnob)->getDefaultValue()));
         parameterChanged(paramTwoKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramTwoKnob, parameters.getParameter(paramTwoKnob)->getDefaultValue()));
         parameterChanged(paramThreeKnob, (float)getParameterDoubleFromXmlElement(root.get(), paramThreeKnob, parameters.getParameter(paramThreeKnob)->getDefaultValue()));
-        parameterChanged(paramOneCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramOneCheckbox, parameters.getParameter(paramOneCheckbox)->getDefaultValue()));
-        parameterChanged(paramTwoCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramTwoCheckbox, parameters.getParameter(paramTwoCheckbox)->getDefaultValue()));
-        parameterChanged(paramThreeCheckbox, (int)getParameterIntFromXmlElement(root.get(), paramThreeCheckbox, parameters.getParameter(paramThreeCheckbox)->getDefaultValue()));
     }
 }
 

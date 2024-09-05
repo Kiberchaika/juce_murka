@@ -152,32 +152,27 @@ void UIBaseComponent::draw()
                                                 .withLabel("THREE");
     threeCheckbox.enabled = true;
     threeCheckbox.draw();
-
-    if (oneCheckbox.changed || twoCheckbox.changed) {
-        if (twoCheckbox.checked) {
-            if (threeCheckbox.checked) {
-                processor->parameterChanged(processor->paramOneCheckbox, true);
-                processor->parameterChanged(processor->paramTwoCheckbox, true);
-            } else {
-                processor->parameterChanged(processor->paramOneCheckbox, true);
-                processor->parameterChanged(processor->paramTwoCheckbox, false);
-            }
-        } else {
-            processor->parameterChanged(processor->paramOneCheckbox, false);
-            processor->parameterChanged(processor->paramTwoCheckbox, false);
-        }
-    }
-
-    if (threeCheckbox.changed) {
-        processor->parameterChanged(processor->paramThreeCheckbox, !processor->three_c);
-    }
     
     /// label
     m.setColor(200, 255);
-    auto& testLabel = m.prepare<TestLabel>(MurkaShape(m.getSize().width() - 100, m.getSize().height(), 80, 20));
+    auto& testLabel = m.prepare<TestLabel>(MurkaShape(m.getSize().width() - 100, m.getSize().height() - 40, 80, 20));
     testLabel.label = "Test Label";
     testLabel.alignment = TEXT_CENTER;
     testLabel.draw();
+
+    juce::Time now = juce::Time::getCurrentTime();
+    juce::String nowString = juce::String::formatted(
+        "%04d-%02d-%02d %02d:%02d:%02d.%03d",
+        now.getYear(), now.getMonth() + 1, now.getDayOfMonth(),
+        now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()
+    );
+
+    m.setColor(200, 255);
+    DBG("BUILD: " + nowString);
+    auto& timeLabel = m.prepare<TestLabel>(MurkaShape(m.getSize().width() - 100, m.getSize().height() - 20, 120, 20));
+    timeLabel.label = nowString.toStdString();
+    timeLabel.alignment = TEXT_CENTER;
+    timeLabel.draw();
 }
 
 //==============================================================================
