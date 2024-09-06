@@ -150,6 +150,7 @@ public:
 		int k = convertKey(keyCode);
 		m.registerKeyPressed(k >= 0 ? k : keysPressed[keyCode]);
 
+        if (!m.isPlugin) return true;
 		return m.doesHaveAWidgetThatHoldsKeyboardFocus();
 	}
 
