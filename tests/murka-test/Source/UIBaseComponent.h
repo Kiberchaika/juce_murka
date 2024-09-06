@@ -35,7 +35,15 @@ private:
 	MurkaPoint cachedMousePositionWhenMouseWasHidden = { 0, 0 };
 	MurkaPoint currentMousePositionJuceScaled = { 0, 0 };
 
-	std::function<void()> cursorHide = [&]() {
+    // date and time stamp
+    juce::Time now = juce::Time::getCurrentTime();
+    juce::String nowString = juce::String::formatted(
+        "%04d-%02d-%02d %02d:%02d:%02d.%03d",
+        now.getYear(), now.getMonth() + 1, now.getDayOfMonth(),
+        now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()
+    );
+    
+    std::function<void()> cursorHide = [&]() {
 		setMouseCursor(juce::MouseCursor::NoCursor);
 		cachedMousePositionWhenMouseWasHidden = currentMousePositionJuceScaled;
 	};

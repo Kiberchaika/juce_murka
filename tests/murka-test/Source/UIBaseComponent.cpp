@@ -20,6 +20,7 @@ UIBaseComponent::~UIBaseComponent()
 void UIBaseComponent::initialise()
 {
 	JuceMurkaBaseComponent::initialise();
+    DBG("BUILD: " + nowString); // print the build timestamp
 }
 
 void UIBaseComponent::draw()
@@ -157,15 +158,7 @@ void UIBaseComponent::draw()
     testLabel.alignment = TEXT_CENTER;
     testLabel.draw();
 
-    juce::Time now = juce::Time::getCurrentTime();
-    juce::String nowString = juce::String::formatted(
-        "%04d-%02d-%02d %02d:%02d:%02d.%03d",
-        now.getYear(), now.getMonth() + 1, now.getDayOfMonth(),
-        now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()
-    );
-
     m.setColor(200, 255);
-    DBG("BUILD: " + nowString);
     auto& timeLabel = m.prepare<TestLabel>(MurkaShape(m.getSize().width() - 100, m.getSize().height() - 20, 120, 20));
     timeLabel.label = nowString.toStdString();
     timeLabel.alignment = TEXT_CENTER;
