@@ -34,20 +34,20 @@ public:
         
         // "Outer" circle
         m.drawCircle(shape.size.x / 2,
-                     shape.size.y * 0.35,
-                     shape.size.x * (0.25 + A(0.01 * hoveredLocal)));
+                     shape.size.y * 0.35f,
+                     shape.size.x * (0.25f + (float)A(0.01f * hoveredLocal)));
         
         // "Inner" circle
         m.setColor(60, 60, 60);
         m.drawCircle(shape.size.x / 2,
-                     shape.size.y * 0.35,
-                     shape.size.x * 0.25 - 2 * (width + A(0.5 * hoveredLocal)));
+                     shape.size.y * 0.35f,
+                     shape.size.x * 0.25f - 2 * (float)(width + A(0.5f * hoveredLocal)));
         m.setColor(60, 60, 60);
         
        // A grey colored rectangle that rotates
         m.pushMatrix();
         m.translate(shape.size.x / 2,
-                    shape.size.y * 0.35,
+                    shape.size.y * 0.35f,
                      0);
         
         float inputValueNormalised = ((*data - rangeFrom) / (rangeTo - rangeFrom));
@@ -58,12 +58,12 @@ public:
         }
         
         m.rotateZRad(inputValueAngleInDegrees * (juce::MathConstants<float>::pi / 180));
-        m.drawRectangle(-width * (4 + A(1 * isInside)), 0, width * (8 + A(2 * isInside)), shape.size.x * (0.25 + A(0.02 * isInside)));
+        m.drawRectangle(-width * (4 + A(1 * isInside)), 0, width * (8 + A(2 * isInside)), shape.size.x * (0.25f + A(0.02f * isInside)));
         
         // A white rectangle inside a grey colored one
         m.setColor(100 + 90 * enabled + A(30 * hoveredLocal) * enabled, 255);
         float w = A(width * (1 + 1 * hoveredLocal));
-        m.drawRectangle(-w, 0, w * 2, shape.size.x * 0.26);
+        m.drawRectangle(-w, 0, w * 2, shape.size.x * 0.26f);
         
         m.popMatrix();
         m.popStyle();

@@ -66,7 +66,7 @@ public:
 	{ 
 		checkModifierKeys();
 
-		if (scale != (float)openGLContext.getRenderingScale()) {
+        if (!juce::approximatelyEqual(scale, (float)openGLContext.getRenderingScale())) {
 			scale = (float)openGLContext.getRenderingScale();
 			m.setScreenScale(scale);
 			m.updateFontsTextures(&m);
@@ -212,27 +212,27 @@ public:
 	}
     
 	void mouseMove(const juce::MouseEvent& event) override {
-		float desktopScale = openGLContext.getRenderingScale();
+		float desktopScale = (float)openGLContext.getRenderingScale();
 		m.registerMouseMoved(event.x * desktopScale, event.y * desktopScale, 0);
 	}
 
 	void mouseDown(const juce::MouseEvent& event) override {
-		float desktopScale = openGLContext.getRenderingScale();
+		float desktopScale = (float)openGLContext.getRenderingScale();
 		m.registerMousePressed(event.x * desktopScale, event.y * desktopScale, 0);
 	}
 
 	void mouseUp(const juce::MouseEvent& event) override {
-		float desktopScale = openGLContext.getRenderingScale();
+		float desktopScale = (float)openGLContext.getRenderingScale();
 		m.registerMouseReleased(event.x * desktopScale, event.y * desktopScale, 0);
 	}
 
 	void mouseDrag(const juce::MouseEvent& event) override {
-		float desktopScale = openGLContext.getRenderingScale();
+		float desktopScale = (float)openGLContext.getRenderingScale();
 		m.registerMouseDragged(event.x * desktopScale, event.y * desktopScale, 0);
 	}
 
 	void mouseWheelMove(const juce::MouseEvent& event, const juce::MouseWheelDetails& wheelDetails) override {
-		float desktopScale = openGLContext.getRenderingScale();
+		float desktopScale = (float)openGLContext.getRenderingScale();
 		m.registerMouseScrolled(wheelDetails.deltaX * desktopScale, wheelDetails.deltaY * desktopScale);
 	}
 

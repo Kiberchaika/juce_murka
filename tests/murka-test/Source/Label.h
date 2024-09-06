@@ -25,10 +25,10 @@ public:
 
 		// color 
 		MurkaColor fgColor = customColor ? color : m.getColor();
-		float anim = enabled ? 1.0 * 40 / 255 * A(highlighted) : 0.0;
-		fgColor.setRed(fgColor.getRed() + anim - fgColor.getRed() * 0.5 * !enabled);
-		fgColor.setGreen(fgColor.getGreen() + anim - fgColor.getGreen() * 0.5 * !enabled);
-		fgColor.setBlue(fgColor.getBlue() + anim - fgColor.getBlue() * 0.5 * !enabled);
+		float anim = enabled ? 1.0f * 40 / 255 * A(highlighted) : 0.0f;
+		fgColor.setRed(fgColor.getRed() + anim - fgColor.getRed() * 0.5f * !enabled);
+		fgColor.setGreen(fgColor.getGreen() + anim - fgColor.getGreen() * 0.5f * !enabled);
+		fgColor.setBlue(fgColor.getBlue() + anim - fgColor.getBlue() * 0.5f * !enabled);
 
 		m.setColor(fgColor);
 		if (alignment == TEXT_LEFT) {
@@ -66,7 +66,7 @@ public:
         return *this;
     }
 
-    MurkaColor color = { 0.98, 0.98, 0.98 };
+    MurkaColor color = { 0.98f, 0.98f, 0.98f };
     MurkaColor backgroundColor = { 0., 0., 0., 0. };
 
     FontObject* font;

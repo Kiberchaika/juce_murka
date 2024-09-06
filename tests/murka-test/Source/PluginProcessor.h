@@ -28,7 +28,7 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
-    void parameterChanged(const juce::String &parameterID, float newValue);
+    void parameterChanged(const juce::String &parameterID, float newValue) override;
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
