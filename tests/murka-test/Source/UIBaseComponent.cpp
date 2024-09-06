@@ -27,7 +27,7 @@ void UIBaseComponent::draw()
 {
     float scale = (float)openGLContext.getRenderingScale() * 0.7f;
 
-    if (std::fabs(scale - m.getScreenScale()) > std::numeric_limits<float>::epsilon()) { // safer way to compare two floats with the lhs being greater than epsilon means (lhs != rhs)
+    if (!IsApproximatelyEqual(scale, m.getScreenScale())) {
         m.setScreenScale(scale);
         m.updateFontsTextures(&m);
         m.clearFontsTextures();
