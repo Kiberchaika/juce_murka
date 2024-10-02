@@ -69,8 +69,7 @@ public:
         if (!juce::approximatelyEqual(scale, (float)openGLContext.getRenderingScale())) {
 			scale = (float)openGLContext.getRenderingScale();
 			m.setScreenScale(scale);
-			m.updateFontsTextures(&m);
-			m.clearFontsTextures();
+			m.reloadFonts(&m);
 		}
 
 		m.startFrame();
