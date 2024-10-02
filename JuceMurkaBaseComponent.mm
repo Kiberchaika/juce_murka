@@ -41,8 +41,7 @@ void JuceMurkaBaseComponent::checkMainWindow()
     } else {
         isWindowFocused = false;
     }
-    
-    
+
     if (windowWasFocused && !isWindowFocused) {
         // Just unfocused the window, let's send the key releases.
         // Releasing normal keys
@@ -77,6 +76,3 @@ void JuceMurkaBaseComponent::checkMainWindow()
         }
     }
 }
-
-
-
