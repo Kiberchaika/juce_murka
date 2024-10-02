@@ -29,8 +29,7 @@ void UIBaseComponent::draw()
 
     if (!IsApproximatelyEqual(scale, m.getScreenScale())) {
         m.setScreenScale(scale);
-        m.updateFontsTextures(&m);
-        m.clearFontsTextures();
+        m.reloadFonts(&m);
     }
 
     currentMousePositionJuceScaled = m.mousePosition() / m.getScreenScale();
