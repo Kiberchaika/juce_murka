@@ -10,7 +10,6 @@
 
 namespace murka {
 
-	
 class JuceMurkaBaseComponent : public juce::OpenGLAppComponent, public juce::KeyListener
 {
 public:
@@ -133,11 +132,9 @@ public:
     
 	//==============================================================================
 	void paint(juce::Graphics& g) override {
-
 	}
 
 	void resized() override {
-
 	}
 
 	bool keyPressed(const juce::KeyPress &key, Component *originatingComponent) override {
@@ -250,4 +247,4 @@ private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceMurkaBaseComponent)
 };
 
-}
+} // end of namespace Murka
