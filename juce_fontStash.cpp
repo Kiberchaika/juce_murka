@@ -17,7 +17,7 @@ extern "C" {
 
 void juceFontStash::cleanup() {
 	if (fs != NULL) {
-		glfonsDelete(fs);
+		glfontDelete(fs);
 		fs = NULL;
 	}
 }
@@ -44,39 +44,39 @@ bool juceFontStash::load(const std::string filename, float fontsize, bool isAbso
 
 	cleanup();
 
-	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
+	fs = glfontCreate(512, 512, FONT_ZERO_TOPLEFT);
 	if (fs == NULL) {
 		printf("Could not create stash.\n");
 		return false;
 	}
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+	MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 	context->renderer = (murka::MurkaRendererBase*)renderer;
 #endif
 
 	std::string path = filename;
-	font = fonsAddFont(fs, "font", path.c_str());
-	if (font == FONS_INVALID) {
+	font = fontAddFont(fs, "font", path.c_str());
+	if (font == FONT_INVALID) {
 		printf("Error loading font (might be a wrong filename): %s\n", path.c_str());
 		return false;
 	}
 
-	fonsClearState(fs);
-	fonsSetFont(fs, font);
+	fontClearState(fs);
+	fontSetFont(fs, font);
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	float scale = context->renderer->getScreenScale();
-	fonsSetSize(fs, scale * fontsize);
+	fontSetSize(fs, scale * fontsize);
 #else
-	fonsSetSize(fs, fontsize);
+	fontSetSize(fs, fontsize);
 #endif
 
-	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
+	fontSetAlign(fs, FONT_ALIGN_LEFT | FONT_ALIGN_TOP);
 
-	//fonsSetColor(fs, white);
-	//fonsSetSpacing(fs, 5.0f);
-	//fonsSetBlur(fs, 10.0f);
+	//fontSetColor(fs, white);
+	//fontSetSpacing(fs, 5.0f);
+	//fontSetBlur(fs, 10.0f);
 
 	return true;
 }
@@ -86,38 +86,38 @@ bool juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 
 	cleanup();
 
-	fs = glfonsCreate(512, 512, FONS_ZERO_TOPLEFT);
+	fs = glfontCreate(512, 512, FONT_ZERO_TOPLEFT);
 	if (fs == NULL) {
 		printf("Could not create stash.\n");
 		return false;
 	}
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-	MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+	MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 	context->renderer = (murka::MurkaRendererBase*)renderer;
 #endif
 
-	font = fonsAddFontMem(fs, "font", (unsigned char*)data, dataSize, 1);
-	if (font == FONS_INVALID) {
+	font = fontAddFontMem(fs, "font", (unsigned char*)data, dataSize, 1);
+	if (font == FONT_INVALID) {
 		printf("Error loading font (might be a wrong data\n");
 		return false;
 	}
 
 
-	fonsClearState(fs);
+	fontClearState(fs);
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
 	float scale = context->renderer->getScreenScale();
-	fonsSetSize(fs, scale * fontsize);
+	fontSetSize(fs, scale * fontsize);
 #else
-	fonsSetSize(fs, fontsize);
+	fontSetSize(fs, fontsize);
 #endif
 
-	fonsSetAlign(fs, FONS_ALIGN_LEFT | FONS_ALIGN_TOP);
+	fontSetAlign(fs, FONT_ALIGN_LEFT | FONT_ALIGN_TOP);
 
-	//fonsSetColor(fs, white);
-	//fonsSetSpacing(fs, 5.0f);
-	//fonsSetBlur(fs, 10.0f);
+	//fontSetColor(fs, white);
+	//fontSetSpacing(fs, 5.0f);
+	//fontSetBlur(fs, 10.0f);
 	
 	return true;
 }
@@ -125,13 +125,13 @@ bool juceFontStash::load(const char* data, int dataSize, float fontsize, bool is
 void juceFontStash::updateTexture(void* renderer) {
     if (fs) {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-        MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+        MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
         context->renderer = (murka::MurkaRendererBase*)renderer;
 
         bool bUseArb = context->renderer->getUsingArbTex();
 		context->renderer->disableArbTex();
 
-        fonsResetAtlas(fs, fs->params.width, fs->params.height);
+        fontResetAtlas(fs, fs->params.width, fs->params.height);
         
         if (context->img != 0) {
             context->img->update();
@@ -149,7 +149,7 @@ void juceFontStash::updateTexture(void* renderer) {
 void juceFontStash::clearTexture() {
     if (fs) {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-        MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+        MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
         
         if (context->img != 0) {
             context->img->clearTexture();
@@ -164,10 +164,10 @@ void juceFontStash::clearTexture() {
 
 float juceFontStash::getLineHeight() {
 	float lh = 0;
-	if (font != FONS_INVALID) {
-		fonsVertMetrics(fs, NULL, NULL, &lh);
+	if (font != FONT_INVALID) {
+		fontVertMetrics(fs, NULL, NULL, &lh);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 		lh /= context->renderer->getScreenScale();
 #endif
 	}
@@ -175,10 +175,10 @@ float juceFontStash::getLineHeight() {
 }
 
  float juceFontStash::stringWidth(const std::string & s) {
-	if (font != FONS_INVALID) {
-		float width = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, NULL);
+	if (font != FONT_INVALID) {
+		float width = fontTextBounds(fs, 0, 0, s.c_str(), NULL, NULL);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 		width /= context->renderer->getScreenScale();
 #endif
 		return width;
@@ -188,10 +188,10 @@ float juceFontStash::getLineHeight() {
 
  float juceFontStash::stringHeight(const std::string & s) {
 	 float bounds[4] = { 0, 0, 0, 0 };
-	 if (font != FONS_INVALID) {
-		 float height = fonsTextBounds(fs, 0, 0, s.c_str(), NULL, bounds);
+	 if (font != FONT_INVALID) {
+		 float height = fontTextBounds(fs, 0, 0, s.c_str(), NULL, bounds);
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		 MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 		 height /= context->renderer->getScreenScale();
 #endif
 		 return height;
@@ -201,12 +201,12 @@ float juceFontStash::getLineHeight() {
 
  juceFontStash::Rectangle juceFontStash::getStringBoundingBox(const std::string & s, float x, float y) {
 	 float bounds[4] = { 0, 0, 0, 0 };
-	 if (font != FONS_INVALID) {
-		 fonsTextBounds(fs, x, y, s.c_str(), NULL, bounds);
+	 if (font != FONT_INVALID) {
+		 fontTextBounds(fs, x, y, s.c_str(), NULL, bounds);
 	 }
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-	 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+	 MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 	 float scale = context->renderer->getScreenScale();
 	 return juceFontStash::Rectangle{ x + bounds[0] / scale, y + bounds[1] / scale, bounds[2] / scale, bounds[3] / scale };
 #else
@@ -217,18 +217,18 @@ float juceFontStash::getLineHeight() {
  
  std::vector<juceFontStash::Rectangle> juceFontStash::getStringSymbolsBoundingBoxes(const std::string & s, float x, float y, bool needJoin) {
 	 std::vector<juceFontStash::Rectangle> rects;
-	 if (font != FONS_INVALID) {
+	 if (font != FONT_INVALID) {
 
-		 FONSstate* state = fons__getState(fs);
+		 FONTstate* state = font__getState(fs);
 		 unsigned int codepoint;
 		 unsigned int utf8state = 0;
-		 FONSquad q;
-		 FONSglyph* glyph = NULL;
+		 FONTquad q;
+		 FONTglyph* glyph = NULL;
 		 int prevGlyphIndex = -1;
 		 short isize = (short)(state->size*10.0f);
 		 short iblur = (short)state->blur;
 		 float scale;
-		 FONSfont* font;
+		 FONTfont* font;
 		 float startx, advance;
 		 float minx, miny, maxx, maxy;
 
@@ -238,14 +238,14 @@ float juceFontStash::getLineHeight() {
 		 if (font->data == NULL) return rects;
 
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-		 MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		 MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 		 isize /= context->renderer->getScreenScale();
 #endif
 
-		 scale = fons__tt_getPixelHeightScale(&font->font, (float)isize / 10.0f);
+		 scale = font__tt_getPixelHeightScale(&font->font, (float)isize / 10.0f);
 
 		 // Align vertically.
-		 y += fons__getVertAlign(fs, font, state->align, isize);
+		 y += font__getVertAlign(fs, font, state->align, isize);
 
 		 minx = maxx = x;
 		 miny = maxy = y;
@@ -255,14 +255,14 @@ float juceFontStash::getLineHeight() {
 		 char* end = str + strlen(str);
 
 		 for (; str != end; ++str) {
-			 if (fons__decutf8(&utf8state, &codepoint, *(const unsigned char*)str))
+			 if (font__decutf8(&utf8state, &codepoint, *(const unsigned char*)str))
 				 continue;
-			 glyph = fons__getGlyph(fs, font, codepoint, isize, iblur);
+			 glyph = font__getGlyph(fs, font, codepoint, isize, iblur);
 			 if (glyph != NULL) {
-				 fons__getQuad(fs, font, prevGlyphIndex, glyph, scale, state->spacing, &x, &y, &q);
+				 font__getQuad(fs, font, prevGlyphIndex, glyph, scale, state->spacing, &x, &y, &q);
 				 if (q.x0 < minx) minx = q.x0;
 				 if (q.x1 > maxx) maxx = q.x1;
-				 if (fs->params.flags & FONS_ZERO_TOPLEFT) {
+				 if (fs->params.flags & FONT_ZERO_TOPLEFT) {
 					 if (q.y0 < miny) miny = q.y0;
 					 if (q.y1 > maxy) maxy = q.y1;
 				 }
@@ -278,17 +278,17 @@ float juceFontStash::getLineHeight() {
 		 advance = x - startx;
 
 		 // Align horizontally
-		 if (state->align & FONS_ALIGN_LEFT) {
+		 if (state->align & FONT_ALIGN_LEFT) {
 			 // empty
 		 }
-		 else if (state->align & FONS_ALIGN_RIGHT) {
+		 else if (state->align & FONT_ALIGN_RIGHT) {
 			 minx -= advance;
 			 maxx -= advance;
 			 for (size_t i = 0; i < rects.size(); i++) {
 				 rects[i].x -= advance;
 			 }
 		 }
-		 else if (state->align & FONS_ALIGN_CENTER) {
+		 else if (state->align & FONT_ALIGN_CENTER) {
 			 minx -= advance * 0.5f;
 			 maxx -= advance * 0.5f;
 			 for (size_t i = 0; i < rects.size(); i++) {
@@ -313,39 +313,39 @@ float juceFontStash::getLineHeight() {
  
 
 void juceFontStash::drawString(const std::string & s, float x, float y) {
-	if (font != FONS_INVALID) {
+	if (font != FONT_INVALID) {
 #if defined(MURKA_OF) || defined(MURKA_JUCE)
-		MURKAFONScontext* context = (MURKAFONScontext*)fs->params.userPtr;
+		MURKAFONTcontext* context = (MURKAFONTcontext*)fs->params.userPtr;
 		float scale = context->renderer->getScreenScale();
-		fonsDrawText(fs, x * scale, y * scale, s.c_str(), NULL);
+		fontDrawText(fs, x * scale, y * scale, s.c_str(), NULL);
 #else
-		fonsDrawText(fs, x, y, s.c_str(), NULL);
+		fontDrawText(fs, x, y, s.c_str(), NULL);
 #endif
 	}
 }
 
 void juceFontStash::stashError(void* ptr, int error, int val) {
-	FONScontext* context = (FONScontext*)ptr;
+	FONTcontext* context = (FONTcontext*)ptr;
 	switch (error) {
-	case FONS_ATLAS_FULL: {
+	case FONT_ATLAS_FULL: {
 		std::cout << "font atlas texture full, expanding";
 		int width, height;
-		fonsGetAtlasSize(context, &width, &height);
+		fontGetAtlasSize(context, &width, &height);
 		if (width <= ATLAS_MAX_SIZE && height <= ATLAS_MAX_SIZE) {
-			fonsExpandAtlas(context, width * 2, height * 2);
+			fontExpandAtlas(context, width * 2, height * 2);
 		}
 		else {
 			std::cout << "couldn't expand atlas more than " << ATLAS_MAX_SIZE;
 		}
 		break;
 	}
-	case FONS_SCRATCH_FULL:
-		std::cout << "scratch full, tried to allocate " << val << " has " << FONS_SCRATCH_BUF_SIZE;
+	case FONT_SCRATCH_FULL:
+		std::cout << "scratch full, tried to allocate " << val << " has " << FONT_SCRATCH_BUF_SIZE;
 		break;
-	case FONS_STATES_OVERFLOW:
+	case FONT_STATES_OVERFLOW:
 		std::cout << "state overflow";
 		break;
-	case FONS_STATES_UNDERFLOW:
+	case FONT_STATES_UNDERFLOW:
 		std::cout << "state underflow";
 		break;
 	}

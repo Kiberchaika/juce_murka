@@ -23,8 +23,8 @@ extern "C" {
 #endif
 
 class juceFontStash {
-    int font = FONS_INVALID;
-    FONScontext* fs = nullptr;
+    int font = FONT_INVALID;
+    FONTcontext* fs = nullptr;
    
 	void cleanup();
 
