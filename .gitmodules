@@ -4,3 +4,6 @@
 [submodule "fontstash"]
 	path = fontstash
 	url = https://github.com/Kiberchaika/fontstash
+[submodule "JUCE"]
+	path = JUCE
+	url = https://github.com/juce-framework/JUCE.git
