@@ -215,17 +215,20 @@ public:
 
 	void mouseDown(const juce::MouseEvent& event) override {
 		float desktopScale = (float)openGLContext.getRenderingScale();
-		m.registerMousePressed(event.x * desktopScale, event.y * desktopScale, 0);
+		int buttonIndex = getMouseButtonIndex(event);
+		m.registerMousePressed(event.x * desktopScale, event.y * desktopScale, buttonIndex);
 	}
 
 	void mouseUp(const juce::MouseEvent& event) override {
 		float desktopScale = (float)openGLContext.getRenderingScale();
-		m.registerMouseReleased(event.x * desktopScale, event.y * desktopScale, 0);
+		int buttonIndex = getMouseButtonIndex(event);
+		m.registerMouseReleased(event.x * desktopScale, event.y * desktopScale, buttonIndex);
 	}
 
 	void mouseDrag(const juce::MouseEvent& event) override {
 		float desktopScale = (float)openGLContext.getRenderingScale();
-		m.registerMouseDragged(event.x * desktopScale, event.y * desktopScale, 0);
+		int buttonIndex = getMouseButtonIndex(event);
+		m.registerMouseDragged(event.x * desktopScale, event.y * desktopScale, buttonIndex);
 	}
 
 	void mouseWheelMove(const juce::MouseEvent& event, const juce::MouseWheelDetails& wheelDetails) override {
@@ -243,6 +246,14 @@ private:
 	bool ctrlKeyPressed = false;
 	bool shiftKeyPressed = false;
 	float scale = 0;
+	
+	// Helper to convert JUCE mouse button to Murka button index
+	int getMouseButtonIndex(const juce::MouseEvent& event) {
+		if (event.mods.isLeftButtonDown())   return 0; // Left
+		if (event.mods.isRightButtonDown())  return 1; // Right
+		if (event.mods.isMiddleButtonDown()) return 2; // Middle
+		return 0; // Default to left if unknown
+	}
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JuceMurkaBaseComponent)
 };
