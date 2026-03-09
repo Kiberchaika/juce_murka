@@ -25,16 +25,20 @@ public:
 
         // Giving Murka a way to call this component's grab and release keyboard focus functions so that
         // the Juce is notified that Murka asks for keyboard events.
-        m.setKeyboardFocusRequestCallbacks([&]() {
-			juce::MessageManager::callAsync([&]() {
-				this->grabKeyboardFocus();
-				});
+		auto safeThis = juce::Component::SafePointer<JuceMurkaBaseComponent>(this);
+        m.setKeyboardFocusRequestCallbacks([safeThis]() {
+			juce::MessageManager::callAsync([safeThis]() {
+				if (safeThis != nullptr) {
+					safeThis->grabKeyboardFocus();
+				}
+			});
         },
-                                           [&]() {
-            juce::MessageManager::callAsync([&]() { 
-                this->giveAwayKeyboardFocus();
+                                           [safeThis]() {
+            juce::MessageManager::callAsync([safeThis]() {
+                if (safeThis != nullptr) {
+                    safeThis->giveAwayKeyboardFocus();
+                }
             });
-			
         } );
 	}
 
@@ -71,7 +75,6 @@ public:
 			m.reloadFonts(&m);
 		}
 
-		m.startFrame();
 		m.begin();
 		draw();
 		m.end();
